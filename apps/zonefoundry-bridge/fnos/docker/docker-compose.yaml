@@ -5,6 +5,15 @@ services:
     network_mode: host
     volumes:
       - ${TRIM_PKGVAR:?}/data:/app/data
+      # 1-tap self-update: lets the bridge pull its own image from
+      # Docker Hub when the user taps "升级" in the iOS app's Bridges
+      # screen. Remove this mount + the group_add entry below if you
+      # prefer to update manually via fnOS Apps.
+      - /var/run/docker.sock:/var/run/docker.sock
+    # 飞牛 fnOS / Debian 默认 docker 组 GID = 999. 让非 root 容器
+    # 用户 (UID 10001) 也能跟 docker socket 讲话.
+    group_add:
+      - "999"
     environment:
       - TZ=Asia/Shanghai
       - ZF_RELAY_URL=wss://relay.zonefoundry.dev/ws

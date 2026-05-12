@@ -23,6 +23,16 @@
 - 不监听独立端口；fnOS 应用图标仅作占位
 - 镜像同时支持 amd64 / arm64
 
+## 1-tap 自动更新
+
+`docker-compose.yaml` 默认挂载 `/var/run/docker.sock` 并加 `group_add: ["999"]`（飞牛/Debian docker 组 GID）。当 ZoneFoundry iOS App 的 Bridges 页面出现"升级"按钮时，点一下即可：
+
+1. Bridge 通过 docker socket 拉取最新镜像
+2. SIGTERM 自身让 fnOS Apps 用新镜像重启容器
+3. 全程不用 SSH / Container Manager / 手动 recreate
+
+如果你不想让 Bridge 有 docker socket 访问权限，可在安装后编辑 `docker-compose.yaml` 删除 socket 挂载和 `group_add`，改回手动通过 fnOS Apps 升级。
+
 ## 本地构建
 
 ```bash
