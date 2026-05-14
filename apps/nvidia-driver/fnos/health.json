@@ -1,0 +1,5 @@
+{
+    "type": "skip",
+    "skip_arch": [],
+    "note": "NVIDIA Driver package — installs kernel modules and container toolkit; no service daemon, no UI, no port. Manifest.service_port=0 and missing desktop_uidir/desktop_applaunchname are intentional. Health check skipped by design."
+}

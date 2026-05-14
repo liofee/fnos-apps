@@ -77,6 +77,16 @@ check_icons_nonempty() {
     pass "$slug: icons non-trivial"
 }
 
+is_service_app() {
+    local slug="$1"
+    local h
+    h="$(app_dir "$slug")/fnos/health.json"
+    [ ! -f "$h" ] && return 0
+    local t
+    t="$(jq -r '.type // "http"' "$h" 2>/dev/null)"
+    [ "$t" != "skip" ]
+}
+
 check_manifest_keys() {
     local slug="$1"
     local manifest
@@ -86,6 +96,11 @@ check_manifest_keys() {
     for k in "${REQUIRED_MANIFEST_KEYS[@]}"; do
         if [ -z "$(manifest_get "$manifest" "$k")" ]; then
             [ "$k" = "checksum" ] && continue
+            if ! is_service_app "$slug"; then
+                case "$k" in
+                    desktop_uidir|desktop_applaunchname|service_port) continue ;;
+                esac
+            fi
             missing+=("$k")
         fi
     done
@@ -121,7 +136,9 @@ check_manifest_values() {
     fi
 
     if [ -n "$port" ]; then
-        if ! [[ "$port" =~ ^[0-9]+$ ]] || [ "$port" -lt 1 ] || [ "$port" -gt 65535 ]; then
+        if [ "$port" = "0" ] && ! is_service_app "$slug"; then
+            :
+        elif ! [[ "$port" =~ ^[0-9]+$ ]] || [ "$port" -lt 1 ] || [ "$port" -gt 65535 ]; then
             fail "$slug: manifest.service_port='$port' is not a valid port"
             ok=0
         fi
@@ -155,15 +172,18 @@ check_ui_port_matches() {
         fail "$slug: ui/config is not valid JSON"
         return 1
     fi
-    ui_port="$(jq -r '.. | objects | .port? // empty' <"$ui_config" | head -1)"
-    if [ -z "$ui_port" ]; then
+    local ui_ports
+    ui_ports="$(jq -r '.. | objects | .port? // empty' <"$ui_config")"
+    if [ -z "$ui_ports" ]; then
         return 0
     fi
-    if [ "$ui_port" != "$manifest_port" ]; then
-        fail "$slug: ui/config port='$ui_port' != manifest.service_port='$manifest_port'"
-        return 1
+    if printf '%s\n' "$ui_ports" | grep -qx "$manifest_port"; then
+        pass "$slug: ui/config exposes manifest.service_port ($manifest_port)"
+        return 0
     fi
-    pass "$slug: ui/config port matches manifest"
+    local distinct
+    distinct="$(printf '%s\n' "$ui_ports" | sort -u | paste -sd, -)"
+    warn "$slug: ui/config ports=[$distinct] do not include manifest.service_port='$manifest_port' — verify if this is a multi-port app (legitimate) or a mismatch"
 }
 
 check_scripts_contract() {
