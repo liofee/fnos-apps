@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-14T12:58:20Z",
+  "generated_at": "2026-05-14T12:58:39Z",
   "source": {
     "name": "conversun/fnos-apps",
     "url": "https://github.com/conversun/fnos-apps"
@@ -1150,8 +1150,8 @@
       "display_name": "Lidarr",
       "description": "音乐自动化管理工具，自动搜索和下载音乐专辑",
       "version": "3.1.0.4875",
-      "fpk_version": "3.1.0.4875",
-      "release_tag": "lidarr/v3.1.0.4875",
+      "fpk_version": "3.1.0.4875-r1",
+      "release_tag": "lidarr/v3.1.0.4875-r1",
       "service_port": 8686,
       "homepage_url": "https://lidarr.audio",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/lidarr/fnos/ICON_256.PNG",
@@ -1159,7 +1159,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-04-15T08:29:49Z",
+      "updated_at": "2026-05-14T12:58:18Z",
       "download_count": 99,
       "app_type": "native",
       "category": "automation"
@@ -1762,8 +1762,8 @@
       "display_name": "OpenClaw AI 网关",
       "description": "AI 智能体 Gateway 网关，支持 Telegram、Discord、WhatsApp 等多渠道接入",
       "version": "2026.5.7",
-      "fpk_version": "2026.5.7",
-      "release_tag": "openclaw/v2026.5.7",
+      "fpk_version": "2026.5.7-r1",
+      "release_tag": "openclaw/v2026.5.7-r1",
       "service_port": 18789,
       "homepage_url": "https://docs.openclaw.ai/",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/openclaw/fnos/ICON_256.PNG",
@@ -1771,7 +1771,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-08T08:29:01Z",
+      "updated_at": "2026-05-14T12:58:34Z",
       "download_count": 543,
       "app_type": "native",
       "category": "ai"
