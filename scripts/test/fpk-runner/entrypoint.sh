@@ -264,6 +264,48 @@ cmd_start() {
     return 1
 }
 
+diagnose_probe_failure() {
+    local port="$1"
+    {
+        echo "── probe diagnostic ──"
+        local listeners
+        listeners="$(ss -lntp 2>/dev/null | awk -v p=":${port}" '$4 ~ p { print }' | head -5)"
+        if [ -n "$listeners" ]; then
+            echo "  ✓ port $port HAS listener(s):"
+            printf '%s\n' "$listeners" | sed 's/^/      /'
+        else
+            echo "  ✗ port $port has NO listener; top current listeners:"
+            ss -lntp 2>/dev/null | head -8 | sed 's/^/      /'
+        fi
+        local pid_file="$TRIM_PKGVAR/$TRIM_APPNAME.pid"
+        if [ -s "$pid_file" ]; then
+            local pid; pid="$(head -1 "$pid_file")"
+            if kill -0 "$pid" 2>/dev/null; then
+                echo "  ✓ daemon PID $pid alive"
+                ps -p "$pid" -o pid,user,etime,command 2>/dev/null | tail -1 | sed 's/^/      /'
+            else
+                echo "  ✗ daemon PID $pid in pid_file but NOT running (crashed during startup)"
+            fi
+        else
+            echo "  ✗ no PID file at $pid_file"
+        fi
+        local log_file="$TRIM_PKGVAR/$TRIM_APPNAME.log"
+        if [ -s "$log_file" ]; then
+            echo "  daemon log tail (15 lines):"
+            tail -15 "$log_file" | sed 's/^/      /'
+        else
+            echo "  no daemon log at $log_file"
+        fi
+    } >&2
+}
+
+daemon_alive() {
+    local pid_file="$TRIM_PKGVAR/$TRIM_APPNAME.pid"
+    [ -s "$pid_file" ] || return 1
+    local pid; pid="$(head -1 "$pid_file")"
+    kill -0 "$pid" 2>/dev/null
+}
+
 probe_http() {
     local port="$1" path="$2" timeout="$3" statuses="$4"
     local deadline=$(( $(date +%s) + timeout ))
@@ -276,9 +318,15 @@ probe_http() {
             log "HTTP $last_code from 127.0.0.1:${port}${path} (accepted)"
             return 0
         fi
+        if ! daemon_alive; then
+            warn "daemon died during probe — aborting early"
+            diagnose_probe_failure "$port"
+            return 1
+        fi
         sleep 2
     done
-    warn "HTTP probe failed — last code: '$last_code' (acceptable: $statuses)"
+    warn "HTTP probe timed out — last code: '$last_code' (acceptable: $statuses)"
+    diagnose_probe_failure "$port"
     return 1
 }
 
@@ -290,9 +338,15 @@ probe_tcp() {
             log "TCP 127.0.0.1:$port accepts connections"
             return 0
         fi
+        if ! daemon_alive; then
+            warn "daemon died during probe — aborting early"
+            diagnose_probe_failure "$port"
+            return 1
+        fi
         sleep 2
     done
-    warn "TCP probe failed — nothing listening on 127.0.0.1:$port"
+    warn "TCP probe timed out — nothing listening on 127.0.0.1:$port"
+    diagnose_probe_failure "$port"
     return 1
 }
 
