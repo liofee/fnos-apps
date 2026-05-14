@@ -64,6 +64,10 @@ app_build_app_tgz() {
     cp "$PKG_DIR/bin/headscale-server" "$dst/bin/headscale-server"
     chmod +x "$dst/bin/headscale-server"
     cp -a "$PKG_DIR/ui"/* "$dst/ui/" 2>/dev/null || true
+    # Copy var/ overlay (config templates synced to TRIM_PKGVAR on install)
+    if [ -d "$SCRIPT_DIR/var" ]; then
+        cp -a "$SCRIPT_DIR/var" "$dst/var"
+    fi
 
     cd "$dst"
     tar -czf "$WORK_DIR/app.tgz" .

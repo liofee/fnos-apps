@@ -10,6 +10,16 @@ SERVICE_COMMAND="$APP_DIR/bin/headscale-server $APP_DATA_DIR"
 SVC_BACKGROUND=y
 SVC_WRITE_PID=y
 
+service_postinst() {
+    # Generate private keys if missing (required for headscale startup)
+    # headscale expects WireGuard key format: privkey:<hex-encoded-bytes>
+    if [ ! -f "${TRIM_PKGVAR}/private.key" ]; then
+        echo "privkey:$(openssl rand -hex 32)" > "${TRIM_PKGVAR}/private.key"
+    fi
+    if [ ! -f "${TRIM_PKGVAR}/noise_private.key" ]; then
+        echo "privkey:$(openssl rand -hex 32)" > "${TRIM_PKGVAR}/noise_private.key"
+    fi
+}
 service_preuninst() {
     # 使用 -x 精确匹配进程名，避免误杀 appcenter-cli 等包含 "headscale" 参数的进程
     pkill -x "headscale" 2>/dev/null || true
