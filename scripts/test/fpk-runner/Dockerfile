@@ -13,9 +13,9 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
         sudo \
     && rm -rf /var/lib/apt/lists/*
 
-RUN useradd -m -s /bin/bash -u 10001 fnostest && \
-    mkdir -p /vol1 /var/apps /var/log/apps /usr/trim/apps && \
-    chown -R fnostest:fnostest /vol1 /var/apps /var/log/apps /usr/trim/apps
+RUN mkdir -p /vol1/@appcenter /vol1/@appdata /vol1/@appconf \
+             /vol1/@apphome /vol1/@apptemp /vol1/@appshare \
+             /var/apps /var/log/apps
 
 COPY entrypoint.sh /usr/local/bin/fpk-runner
 RUN chmod +x /usr/local/bin/fpk-runner

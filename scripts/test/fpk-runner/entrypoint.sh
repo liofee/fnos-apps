@@ -3,25 +3,38 @@
 #
 # Subcommands:
 #   install <fpk-path>                Extract + run install_init + install_callback
-#   start                             Run cmd/main start
+#   start                             Run cmd/main start as the package user
 #   probe                             HTTP/TCP probe per health.json
-#   stop                              Run cmd/main stop
+#   stop                              Run cmd/main stop as the package user
 #   uninstall                         Run uninstall_init + uninstall_callback (with data delete)
 #   logs                              Cat LOG_FILE for the installed app
-#   assert-clean                      Assert no stale PID, no port listening, no leftover data
+#   assert-clean                      Assert no PID, no port, no leftover data
 #   help                              Show this help
 #
+# Filesystem layout (per fnos-developer-guide, "fnOS 运行时路径" appendix):
+#   /vol1/@appcenter/<app>          → TRIM_APPDEST   (app code, target/)
+#   /vol1/@appdata/<app>            → TRIM_PKGVAR    (var/, runtime data)
+#   /vol1/@appconf/<app>            → TRIM_PKGETC    (etc/, static config)
+#   /vol1/@apphome/<app>            → TRIM_PKGHOME   (home/, user data)
+#   /vol1/@apptemp/<app>            → TRIM_PKGTMP    (tmp/)
+#   /var/apps/<app>/etc             → INST_ETC referenced by shared/cmd/common
+#                                     (stores installer-variables; emptied on uninstall)
+#
+# Privilege model (per docs/fnos-developer-guide section 五):
+#   config/privilege.run-as=package → service runs as configured username/groupname
+#   config/privilege.run-as=root    → service runs as root (rare, enterprise only)
+#   join-groups (alias: extra-groups) → additional supplementary groups
+#
 # State (per container):
-#   /vol1/<appname>                 → TRIM_PKGVAR (app data)
-#   /var/apps/<appname>/etc         → TRIM_PKGETC (app etc)
-#   /usr/trim/apps/<appname>        → TRIM_APPDEST (app code)
-#   /var/run/fpk-runner.env         → exports for subsequent subcommand calls
+#   /var/run/fpk-runner/env         → exports for subsequent subcommand calls
+#   /var/run/fpk-runner/extracted/  → unpacked fpk root (manifest, cmd/, app.tgz…)
+#   /var/run/fpk-runner/health.json → resolved health spec (if any)
 
 set -euo pipefail
 
 STATE_DIR=/var/run/fpk-runner
 STATE_ENV="$STATE_DIR/env"
-EXTRACT_BASE=/var/run/fpk-runner/extracted
+EXTRACT_BASE="$STATE_DIR/extracted"
 
 mkdir -p "$STATE_DIR"
 
@@ -41,23 +54,31 @@ load_state() {
 }
 
 save_state() {
-    cat > "$STATE_ENV" <<EOF
-export TRIM_APPNAME='${TRIM_APPNAME:?}'
-export TRIM_APPDEST='${TRIM_APPDEST:?}'
-export TRIM_PKGVAR='${TRIM_PKGVAR:?}'
-export TRIM_PKGETC='${TRIM_PKGETC:?}'
-export TRIM_PKGHOME='${TRIM_PKGHOME:?}'
-export TRIM_SERVICE_PORT='${TRIM_SERVICE_PORT:?}'
-export TRIM_USERNAME='${TRIM_USERNAME:-fnostest}'
-export TRIM_GROUPNAME='${TRIM_GROUPNAME:-fnostest}'
-export TRIM_UID='${TRIM_UID:-10001}'
-export TRIM_GID='${TRIM_GID:-10001}'
-export TRIM_APP_STATUS='installed'
-export TRIM_TEMP_LOGFILE='${TRIM_TEMP_LOGFILE}'
-export DOCKER_MIRROR=''
-export VERSION='${VERSION:-}'
-export HEALTH_JSON='${HEALTH_JSON:-}'
-EOF
+    {
+        printf 'export TRIM_APPNAME=%q\n'        "$TRIM_APPNAME"
+        printf 'export TRIM_APPVER=%q\n'         "${TRIM_APPVER:-}"
+        printf 'export TRIM_APPDEST=%q\n'        "$TRIM_APPDEST"
+        printf 'export TRIM_PKGVAR=%q\n'         "$TRIM_PKGVAR"
+        printf 'export TRIM_PKGETC=%q\n'         "$TRIM_PKGETC"
+        printf 'export TRIM_PKGHOME=%q\n'        "$TRIM_PKGHOME"
+        printf 'export TRIM_PKGTMP=%q\n'         "$TRIM_PKGTMP"
+        printf 'export TRIM_SERVICE_PORT=%q\n'   "$TRIM_SERVICE_PORT"
+        printf 'export TRIM_USERNAME=%q\n'       "$TRIM_USERNAME"
+        printf 'export TRIM_GROUPNAME=%q\n'      "$TRIM_GROUPNAME"
+        printf 'export TRIM_UID=%q\n'            "$TRIM_UID"
+        printf 'export TRIM_GID=%q\n'            "$TRIM_GID"
+        printf 'export TRIM_RUN_USERNAME=root\n'
+        printf 'export TRIM_RUN_GROUPNAME=root\n'
+        printf 'export TRIM_RUN_UID=0\n'
+        printf 'export TRIM_RUN_GID=0\n'
+        printf 'export TRIM_APP_STATUS=installed\n'
+        printf 'export TRIM_TEMP_LOGFILE=%q\n'   "$TRIM_TEMP_LOGFILE"
+        printf 'export DOCKER_MIRROR=\n'
+        printf 'export VERSION=%q\n'             "${VERSION:-}"
+        printf 'export HEALTH_JSON=%q\n'         "${HEALTH_JSON:-}"
+        printf 'export RUN_AS=%q\n'              "$RUN_AS"
+        printf 'export INST_ETC=%q\n'            "$INST_ETC"
+    } > "$STATE_ENV"
 }
 
 manifest_value() {
@@ -69,6 +90,73 @@ manifest_value() {
             print $2; exit
         }
     ' "$manifest"
+}
+
+parse_privilege() {
+    local privilege_file="$1"
+    local app_default="$2"
+
+    PRIV_RUN_AS="package"
+    PRIV_USERNAME="$app_default"
+    PRIV_GROUPNAME="$app_default"
+    PRIV_JOIN_GROUPS=()
+
+    if [ ! -f "$privilege_file" ]; then
+        warn "no config/privilege; defaulting to run-as=package user='$app_default'"
+        return 0
+    fi
+
+    if ! jq -e . <"$privilege_file" >/dev/null 2>&1; then
+        die "config/privilege is not valid JSON: $privilege_file"
+    fi
+
+    PRIV_RUN_AS="$(jq -r '.defaults["run-as"] // "package"' "$privilege_file")"
+    PRIV_USERNAME="$(jq -r --arg d "$app_default" '.username // $d' "$privilege_file")"
+    PRIV_GROUPNAME="$(jq -r --arg d "$app_default" '.groupname // $d' "$privilege_file")"
+
+    local groups_json
+    groups_json="$(jq -c '."join-groups" // ."extra-groups" // []' "$privilege_file")"
+    while IFS= read -r g; do
+        [ -n "$g" ] && PRIV_JOIN_GROUPS+=("$g")
+    done < <(jq -r '.[]?' <<<"$groups_json")
+}
+
+ensure_group() {
+    local name="$1"
+    getent group "$name" >/dev/null 2>&1 || groupadd --system "$name"
+}
+
+ensure_user() {
+    local username="$1" groupname="$2"
+    ensure_group "$groupname"
+    if ! getent passwd "$username" >/dev/null 2>&1; then
+        useradd --system --no-create-home --shell /usr/sbin/nologin \
+                --gid "$groupname" "$username"
+    fi
+    for g in "${PRIV_JOIN_GROUPS[@]}"; do
+        ensure_group "$g"
+        usermod -a -G "$g" "$username" 2>/dev/null || true
+    done
+}
+
+ensure_layout() {
+    mkdir -p "$TRIM_APPDEST" "$TRIM_PKGVAR" "$TRIM_PKGETC" \
+             "$TRIM_PKGHOME" "$TRIM_PKGTMP" "$INST_ETC"
+}
+
+chown_app_dirs() {
+    local owner="$TRIM_USERNAME:$TRIM_GROUPNAME"
+    chown -R "$owner" "$TRIM_APPDEST" "$TRIM_PKGVAR" "$TRIM_PKGETC" \
+                      "$TRIM_PKGHOME" "$TRIM_PKGTMP" "$INST_ETC"
+}
+
+run_as_package() {
+    if [ "$RUN_AS" = "root" ]; then
+        bash "$@"
+    else
+        sudo --preserve-env -u "$TRIM_USERNAME" -g "$TRIM_GROUPNAME" \
+             env "PATH=$PATH" bash "$@"
+    fi
 }
 
 cmd_install() {
@@ -86,22 +174,35 @@ cmd_install() {
     TRIM_APPNAME="$(manifest_value "$manifest" appname)"
     [ -n "$TRIM_APPNAME" ] || die "manifest.appname empty"
     TRIM_SERVICE_PORT="$(manifest_value "$manifest" service_port)"
-    VERSION="$(manifest_value "$manifest" version)"
+    TRIM_APPVER="$(manifest_value "$manifest" version)"
+    VERSION="$TRIM_APPVER"
 
-    TRIM_APPDEST="/usr/trim/apps/$TRIM_APPNAME"
-    TRIM_PKGVAR="/vol1/$TRIM_APPNAME"
-    TRIM_PKGETC="/var/apps/$TRIM_APPNAME/etc"
-    TRIM_PKGHOME="/var/apps/$TRIM_APPNAME/home"
+    parse_privilege "$EXTRACT_BASE/config/privilege" "$TRIM_APPNAME"
+    RUN_AS="$PRIV_RUN_AS"
+    TRIM_USERNAME="$PRIV_USERNAME"
+    TRIM_GROUPNAME="$PRIV_GROUPNAME"
+
+    ensure_user "$TRIM_USERNAME" "$TRIM_GROUPNAME"
+    TRIM_UID="$(id -u "$TRIM_USERNAME")"
+    TRIM_GID="$(getent group "$TRIM_GROUPNAME" | cut -d: -f3)"
+
+    TRIM_APPDEST="/vol1/@appcenter/$TRIM_APPNAME"
+    TRIM_PKGVAR="/vol1/@appdata/$TRIM_APPNAME"
+    TRIM_PKGETC="/vol1/@appconf/$TRIM_APPNAME"
+    TRIM_PKGHOME="/vol1/@apphome/$TRIM_APPNAME"
+    TRIM_PKGTMP="/vol1/@apptemp/$TRIM_APPNAME"
+    INST_ETC="/var/apps/$TRIM_APPNAME/etc"
     TRIM_TEMP_LOGFILE="$STATE_DIR/install.log"
 
-    mkdir -p "$TRIM_APPDEST" "$TRIM_PKGVAR" "$TRIM_PKGETC" "$TRIM_PKGHOME"
+    ensure_layout
     : > "$TRIM_TEMP_LOGFILE"
 
     log "Extracting app.tgz to TRIM_APPDEST=$TRIM_APPDEST"
     [ -f "$EXTRACT_BASE/app.tgz" ] || die "fpk missing app.tgz"
     tar -xzf "$EXTRACT_BASE/app.tgz" -C "$TRIM_APPDEST" || die "app.tgz extract failed"
 
-    # Copy a health.json into state so 'probe' can read it without going back to the source repo.
+    chown_app_dirs
+
     if [ -f "$EXTRACT_BASE/health.json" ]; then
         cp "$EXTRACT_BASE/health.json" "$STATE_DIR/health.json"
         HEALTH_JSON="$STATE_DIR/health.json"
@@ -116,11 +217,15 @@ cmd_install() {
     # shellcheck disable=SC1090
     source "$STATE_ENV"
 
-    log "Running cmd/install_init"
+    log "Installed user=$TRIM_USERNAME($TRIM_UID) group=$TRIM_GROUPNAME($TRIM_GID) run-as=$RUN_AS"
+
+    log "Running cmd/install_init (as root, matches fnOS)"
     bash "$EXTRACT_BASE/cmd/install_init" || die "install_init failed (exit $?)"
 
-    log "Running cmd/install_callback"
+    log "Running cmd/install_callback (as root, matches fnOS)"
     bash "$EXTRACT_BASE/cmd/install_callback" || die "install_callback failed (exit $?)"
+
+    chown_app_dirs
 
     log "Install OK — appname=$TRIM_APPNAME version=$VERSION port=$TRIM_SERVICE_PORT"
 }
@@ -129,8 +234,8 @@ cmd_start() {
     load_state
     local main="$EXTRACT_BASE/cmd/main"
     [ -x "$main" ] || die "cmd/main missing or not executable"
-    log "Running cmd/main start"
-    bash "$main" start || die "start exited non-zero"
+    log "Running cmd/main start (as $TRIM_USERNAME)"
+    run_as_package "$main" start || die "start exited non-zero"
 
     local pid_file="$TRIM_PKGVAR/$TRIM_APPNAME.pid"
     local deadline=$(( $(date +%s) + 10 ))
@@ -139,19 +244,20 @@ cmd_start() {
             local pid
             pid="$(head -1 "$pid_file")"
             if kill -0 "$pid" 2>/dev/null; then
-                log "Daemon PID=$pid alive after start"
+                local proc_user
+                proc_user="$(stat -c '%U' /proc/"$pid" 2>/dev/null || echo '?')"
+                log "Daemon PID=$pid alive after start (owner: $proc_user)"
                 return 0
             fi
         fi
         sleep 1
     done
-    warn "no live PID after 10s — daemon may have exited early (this is the most common 'install-then-unusable' signature)"
+    warn "no live PID after 10s — daemon may have exited early (the typical 'install-then-unusable' signature)"
     return 1
 }
 
 probe_http() {
-    local port="$1" path="$2" timeout="$3"
-    local statuses="$4"
+    local port="$1" path="$2" timeout="$3" statuses="$4"
     local deadline=$(( $(date +%s) + timeout ))
     local last_code=""
     while [ "$(date +%s)" -lt "$deadline" ]; do
@@ -223,8 +329,8 @@ cmd_stop() {
     load_state
     local main="$EXTRACT_BASE/cmd/main"
     [ -x "$main" ] || die "cmd/main missing"
-    log "Running cmd/main stop"
-    bash "$main" stop || warn "stop returned non-zero"
+    log "Running cmd/main stop (as $TRIM_USERNAME)"
+    run_as_package "$main" stop || warn "stop returned non-zero"
 
     local pid_file="$TRIM_PKGVAR/$TRIM_APPNAME.pid"
     if [ -f "$pid_file" ]; then
@@ -236,11 +342,11 @@ cmd_stop() {
 
 cmd_uninstall() {
     load_state
-    log "Running cmd/uninstall_init"
+    log "Running cmd/uninstall_init (as root, matches fnOS)"
     bash "$EXTRACT_BASE/cmd/uninstall_init" || warn "uninstall_init non-zero"
 
     export wizard_delete_data=true
-    log "Running cmd/uninstall_callback (wizard_delete_data=true)"
+    log "Running cmd/uninstall_callback wizard_delete_data=true"
     bash "$EXTRACT_BASE/cmd/uninstall_callback" || warn "uninstall_callback non-zero"
     log "Uninstall complete"
 }
@@ -261,34 +367,54 @@ cmd_logs() {
     fi
 }
 
+assert_dir_empty() {
+    local dir="$1" label="$2"
+    [ -d "$dir" ] || return 0
+    local leftover
+    leftover="$(find "$dir" -mindepth 1 -print 2>/dev/null | head -5 || true)"
+    if [ -n "$leftover" ]; then
+        warn "leftover files under $label ($dir):"$'\n'"$leftover"
+        return 1
+    fi
+    return 0
+}
+
 cmd_assert_clean() {
     load_state
     local rc=0
+
     local pid_file="$TRIM_PKGVAR/$TRIM_APPNAME.pid"
     if [ -f "$pid_file" ]; then
         warn "leftover PID file: $pid_file"
         rc=1
     fi
+
     if ss -lntp 2>/dev/null | awk '{print $4}' | grep -qE "[:.]${TRIM_SERVICE_PORT}$"; then
         warn "port $TRIM_SERVICE_PORT still has a listener after stop"
         rc=1
     fi
+
     if pgrep -f "$TRIM_APPNAME" >/dev/null 2>&1; then
         local procs
         procs="$(pgrep -af "$TRIM_APPNAME" || true)"
         warn "processes matching '$TRIM_APPNAME' still running:"$'\n'"$procs"
         rc=1
     fi
+
+    assert_dir_empty "$TRIM_PKGVAR"  "TRIM_PKGVAR"  || rc=1
+    assert_dir_empty "$TRIM_PKGHOME" "TRIM_PKGHOME" || rc=1
+    assert_dir_empty "$INST_ETC"     "INST_ETC (/var/apps/$TRIM_APPNAME/etc)" || rc=1
+
     if [ "$rc" -eq 0 ]; then
-        log "assert-clean: PASS"
+        log "assert-clean: PASS (no PID, no listener, no process, data dirs empty)"
     else
-        warn "assert-clean: FAIL"
+        warn "assert-clean: FAIL — see warnings above"
     fi
     return "$rc"
 }
 
 cmd_help() {
-    sed -n '2,20p' "$0"
+    sed -n '2,32p' "$0"
 }
 
 case "${1:-help}" in
