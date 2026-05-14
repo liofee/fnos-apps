@@ -18,7 +18,9 @@ tar -xzf bililive.tar.gz -C extracted
 
 # Build app.tgz
 mkdir -p app_root/bin app_root/ui
-cp extracted/bililive-linux-${TARBALL_ARCH} app_root/bililive
+BIN=$(find extracted -name 'bililive*' -type f | head -1)
+[ -z "$BIN" ] && { echo "bililive binary not found in tar" >&2; exit 1; }
+cp "$BIN" app_root/bililive
 chmod +x app_root/bililive
 
 cp apps/bililive-go/fnos/bin/bililive-go-server app_root/bin/bililive-go-server

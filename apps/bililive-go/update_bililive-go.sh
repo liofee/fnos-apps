@@ -58,7 +58,10 @@ app_build_app_tgz() {
     local dst="$WORK_DIR/app_root"
     mkdir -p "$dst/bin" "$dst/ui"
 
-    cp extracted/bililive "$dst/bililive"
+    local bin
+    bin=$(find extracted -name 'bililive*' -type f | head -1)
+    [ -z "$bin" ] && { error "bililive binary not found in tar"; exit 1; }
+    cp "$bin" "$dst/bililive"
     chmod +x "$dst/bililive"
 
     cp "$PKG_DIR/bin/bililive-go-server" "$dst/bin/bililive-go-server"

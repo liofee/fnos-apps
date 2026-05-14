@@ -3,7 +3,45 @@ APP_DIR="${TRIM_APPDEST}"
 APP_DATA_DIR=$1
 
 DATA_DIR="$APP_DATA_DIR/data"
-mkdir -p "$DATA_DIR"
+mkdir -p "$DATA_DIR" "$DATA_DIR/videos" "$DATA_DIR/logs"
+
+# Detect system ffmpeg
+FFMPEG_PATH=""
+for p in /usr/bin/ffmpeg /usr/local/bin/ffmpeg /opt/ffmpeg/bin/ffmpeg; do
+  if [ -x "$p" ]; then FFMPEG_PATH="$p"; break; fi
+done
+
+# Generate config.yml with correct port and data paths
+CONFIG_FILE="$DATA_DIR/config.yml"
+if [ ! -f "$CONFIG_FILE" ]; then
+  cat > "$CONFIG_FILE" <<EOFCFG
+rpc:
+  enable: true
+  bind: :${TRIM_SERVICE_PORT}
+debug: false
+interval: 20
+out_put_path: $DATA_DIR/videos
+ffmpeg_path: $FFMPEG_PATH
+log:
+  out_put_folder: $DATA_DIR/logs
+  save_last_log: true
+  save_every_log: false
+feature:
+  use_native_flv_parser: false
+live_rooms: []
+out_put_tmpl: ''
+video_split_strategies:
+  on_room_name_changed: false
+  max_duration: 0s
+  max_file_size: 0
+cookies: {}
+on_record_finished:
+  convert_to_mp4: false
+  delete_flv_after_convert: false
+  custom_commandline: ""
+timeout_in_us: 60000000
+EOFCFG
+fi
 
 cd "$APP_DIR" || exit 1
-exec ./bililive --port ${TRIM_SERVICE_PORT} --data "$DATA_DIR"
+exec ./bililive -c "$CONFIG_FILE"
