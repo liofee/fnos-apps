@@ -1,0 +1,9 @@
+{
+    "type": "http",
+    "path": "/",
+    "expect_status": [200, 302, 401, 403],
+    "startup_timeout_seconds": 45,
+    "post_install_warmup_seconds": 0,
+    "skip_arch": [],
+    "note": "Syncthing first-run generates cert + config; / returns 302 to /setup or 401 once auth is bootstrapped."
+}

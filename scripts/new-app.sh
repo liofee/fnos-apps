@@ -132,6 +132,18 @@ cat > "$APP_DIR/fnos/ui/config" << EOF
 }
 EOF
 
+cat > "$APP_DIR/fnos/health.json" << EOF
+{
+    "type": "http",
+    "path": "/",
+    "expect_status": [200, 301, 302, 401, 403],
+    "startup_timeout_seconds": 60,
+    "post_install_warmup_seconds": 0,
+    "skip_arch": [],
+    "note": ""
+}
+EOF
+
 # CHANGELOG
 cat > "$APP_DIR/CHANGELOG.md" << 'EOF'
 ## YYYY-MM-DD
@@ -242,3 +254,5 @@ info "  6. Implement scripts/apps/$APPNAME/build.sh"
 info "  7. Update scripts/apps/$APPNAME/meta.env with HOMEPAGE_URL"
 info "  8. Update scripts/apps/$APPNAME/release-notes.tpl with app-specific notes"
 info "  9. Fill in manifest TODO fields"
+info " 10. Tune apps/$APPNAME/fnos/health.json (probe path / startup timeout)"
+info " 11. Run scripts/test/static-check.sh $APPNAME to verify scaffold integrity"
