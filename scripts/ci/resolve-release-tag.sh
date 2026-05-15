@@ -27,17 +27,21 @@ emit_output() {
 
 BASE_TAG="${APP_SLUG}/v${VERSION}"
 
-# Find all existing releases for this version (base tag and any -rN revisions).
-# Cleanup step deletes old revisions, so we must check both base and -rN to
-# detect whether this version has ever been released.
+# Find all existing tags for this version (base tag and any -rN revisions).
+# Cleanup step deletes old revisions but the underlying git tag remains, so we
+# must look at git refs not just gh releases.
 #
-# IMPORTANT: scoped to this app via --json + jq filter so we only count THIS app's
-# releases. The repo has 300+ releases total, so listing without per-app filter and
-# a high limit risks missing older releases (e.g. chromium/v26.04.1 at position 211
-# was missed by an unscoped --limit 200, which caused new revisions to never build).
+# Use git ls-remote which is the canonical source of truth for tags: it lists
+# EVERY tag in the remote without any pagination cap. Previous implementations
+# relied on \`gh release list --limit N\` which silently truncated once the repo
+# grew past N releases (300+ today). Falling back through gh release list keeps
+# us robust if a tag exists without its corresponding release.
 EXISTING_TAGS=$(
-  gh release list --limit 1000 --json tagName -q ".[] | .tagName | select(startswith(\"${APP_SLUG}/v${VERSION}\"))" | \
-    { grep -E "^${BASE_TAG}(-r[0-9]+)?$" || true; }
+  {
+    git ls-remote --tags origin "refs/tags/${BASE_TAG}" "refs/tags/${BASE_TAG}-r*" 2>/dev/null | \
+      awk '{print $2}' | sed 's|^refs/tags/||'
+    gh release list --limit 1000 --json tagName -q ".[] | .tagName | select(startswith(\"${APP_SLUG}/v${VERSION}\"))" 2>/dev/null
+  } | { grep -E "^${BASE_TAG}(-r[0-9]+)?$" || true; } | sort -u
 )
 
 if [ -n "${REVISION}" ]; then
