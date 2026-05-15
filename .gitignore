@@ -4,12 +4,12 @@
 app.tgz
 dist/
 
-# Downloaded binaries
-beszel
-chinesesubfinder
-filebrowser
-lucky
-config.yaml
+# Downloaded binaries (anchored to repo root — bare names masked apps/<slug>/var/* subtrees)
+/beszel
+/chinesesubfinder
+/filebrowser
+/lucky
+/config.yaml
 
 # Legacy scripts
 scripts/lucky.service
