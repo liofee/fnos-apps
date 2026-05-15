@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-15T08:12:05Z",
+  "generated_at": "2026-05-15T08:25:10Z",
   "source": {
     "name": "conversun/fnos-apps",
     "url": "https://github.com/conversun/fnos-apps"
@@ -287,8 +287,8 @@
       "display_name": "Chromium",
       "description": "Chromium 浏览器的 Docker 容器版本，通过网页即可远程访问，内置中文字体支持。",
       "version": "26.04.1",
-      "fpk_version": "26.04.1-r1",
-      "release_tag": "chromium/v26.04.1-r1",
+      "fpk_version": "26.04.1-r2",
+      "release_tag": "chromium/v26.04.1-r2",
       "service_port": 5802,
       "homepage_url": "https://github.com/jlesage/docker-chromium",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/chromium/fnos/ICON_256.PNG",
@@ -296,7 +296,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-15T07:41:00Z",
+      "updated_at": "2026-05-15T08:24:48Z",
       "download_count": 553,
       "app_type": "docker",
       "category": "browser"
@@ -603,8 +603,8 @@
       "display_name": "Firefox",
       "description": "Firefox 浏览器的 Docker 容器版本，通过网页即可远程访问，内置中文字体支持。",
       "version": "26.03.1",
-      "fpk_version": "26.03.1-r2",
-      "release_tag": "firefox/v26.03.1-r2",
+      "fpk_version": "26.03.1-r3",
+      "release_tag": "firefox/v26.03.1-r3",
       "service_port": 5801,
       "homepage_url": "https://github.com/jlesage/docker-firefox",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/firefox/fnos/ICON_256.PNG",
@@ -612,7 +612,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-15T07:41:26Z",
+      "updated_at": "2026-05-15T08:24:51Z",
       "download_count": 458,
       "app_type": "docker",
       "category": "browser"
@@ -1898,7 +1898,7 @@
         "arm"
       ],
       "updated_at": "2026-04-11T08:09:33Z",
-      "download_count": 390,
+      "download_count": 392,
       "app_type": "native",
       "category": "media"
     },
