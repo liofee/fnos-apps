@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-15T07:41:40Z",
+  "generated_at": "2026-05-15T08:12:05Z",
   "source": {
     "name": "conversun/fnos-apps",
     "url": "https://github.com/conversun/fnos-apps"
@@ -371,8 +371,8 @@
       "display_name": "CoPaw",
       "description": "基于 AgentScope 的个人 AI 助手工作站，支持多渠道聊天、本地大模型和定时任务。",
       "version": "1.1.7",
-      "fpk_version": "1.1.7",
-      "release_tag": "copaw/v1.1.7",
+      "fpk_version": "1.1.7-r1",
+      "release_tag": "copaw/v1.1.7-r1",
       "service_port": 8088,
       "homepage_url": "https://github.com/agentscope-ai/CoPaw",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/copaw/fnos/ICON_256.PNG",
@@ -380,7 +380,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-14T08:52:16Z",
+      "updated_at": "2026-05-15T08:11:41Z",
       "download_count": 195,
       "app_type": "docker",
       "category": "ai"
@@ -539,8 +539,8 @@
       "display_name": "Ente",
       "description": "端到端加密照片备份和存储服务，Google Photos 的隐私替代方案。",
       "version": "photos-v1.3.40",
-      "fpk_version": "photos-v1.3.40",
-      "release_tag": "ente/vphotos-v1.3.40",
+      "fpk_version": "photos-v1.3.40-r1",
+      "release_tag": "ente/vphotos-v1.3.40-r1",
       "service_port": 8510,
       "homepage_url": "https://ente.io",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/ente/fnos/ICON_256.PNG",
@@ -548,7 +548,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-09T08:29:32Z",
+      "updated_at": "2026-05-15T08:11:46Z",
       "download_count": 60,
       "app_type": "docker",
       "category": "media",
@@ -1329,7 +1329,7 @@
         "arm"
       ],
       "updated_at": "2026-04-16T08:29:19Z",
-      "download_count": 64,
+      "download_count": 66,
       "app_type": "docker",
       "category": "automation"
     },
