@@ -7,6 +7,14 @@ services:
     volumes:
       - ${TRIM_PKGVAR:?}/config:/config
       - ${TRIM_PKGVAR:?}/fonts:/usr/share/fonts
+    # Explicit env_file directive: fnOS framework invokes \`docker compose\` from a
+    # path that does NOT auto-discover \`.env\` from the compose-file directory. This
+    # directive forces docker compose to load /var/apps/firefox/docker/.env so the
+    # wizard-supplied VNC_PASSWORD actually reaches the container (issue #146).
+    # service_postinst ALWAYS writes .env (with VNC_PASSWORD empty by default) to
+    # guarantee this file exists.
+    env_file:
+      - .env
     environment:
       - USER_ID=${TRIM_UID}
       - GROUP_ID=${TRIM_GID}
@@ -16,9 +24,5 @@ services:
       - DISPLAY_WIDTH=1280
       - DISPLAY_HEIGHT=720
       - KEEP_APP_RUNNING=1
-      # VNC_PASSWORD is read from .env (written by wizard at install time).
-      # When set, both noVNC web access and VNC client connections require auth.
-      # Empty value preserves prior no-auth behavior (recommended only on isolated networks).
-      - VNC_PASSWORD=${VNC_PASSWORD:-}
     shm_size: "2gb"
     restart: unless-stopped
