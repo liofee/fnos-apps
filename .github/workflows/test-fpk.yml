@@ -24,7 +24,7 @@ on:
         default: ''
 
 env:
-  WHITELIST: "alist bililive-go ezbookkeeping forgejo gopeed headscale jellyfin loki lucky mosdns openclaw picoclaw prometheus smartdns syncthing zeroclaw"
+  WHITELIST: "alist bililive-go ezbookkeeping forgejo gopeed headscale jellyfin loki lucky mosdns picoclaw prometheus smartdns syncthing zeroclaw"
 
 jobs:
   detect:

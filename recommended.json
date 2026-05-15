@@ -1,15 +1,6 @@
 {
   "apps": [
     {
-      "name": "openclaw",
-      "display_name": "OpenClaw",
-      "description": "开源 AI Agent 运行时，支持 Windows/Mac/Linux/fnOS 一键部署。配置复杂不建议新手使用，建议使用 sophnet.com 快速体验，或使用 MaxKB",
-      "source_url": "https://blog.910501.xyz/archives/openclaw",
-      "github_repo": "cline/cline",
-      "latest_version": "3.83.0",
-      "updated_at": "2026-05-13T17:25:42Z"
-    },
-    {
       "name": "peerbanhelper",
       "display_name": "PeerBanHelper",
       "description": "BT 反吸血工具，自动封禁异常上传的吸血客户端",

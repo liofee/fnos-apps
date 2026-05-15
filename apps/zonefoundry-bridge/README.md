@@ -33,4 +33,4 @@ cd apps/zonefoundry-bridge && bash ../../scripts/build-fpk.sh . app.tgz
 
 - [ZoneFoundry](https://zonefoundry.dev) by Sam
 - Docker 镜像：[zonefoundry/bridge](https://hub.docker.com/r/zonefoundry/bridge)
-- 同生态：[OpenClaw](../openclaw/) · [ZeroClaw](../zeroclaw/)
+- 同生态：[ZeroClaw](../zeroclaw/)

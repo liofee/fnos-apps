@@ -1,8 +1,0 @@
-#!/bin/bash
-
-### 卸载后清理
-
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-source "${SCRIPT_DIR}/common"
-
-uninstall_callback
