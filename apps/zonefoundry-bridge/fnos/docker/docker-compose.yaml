@@ -24,5 +24,6 @@ services:
       - TZ=Asia/Shanghai
       - ZF_RELAY_URL=wss://relay.zonefoundry.dev/ws
       - ZF_AGENT_LABEL=fnos-bridge
-      - ZF_TOKEN=${ZF_TOKEN:-}
+      # ZF_TOKEN supplied via env_file (seed = empty, service_postinst overwrites
+      # with wizard value). Do NOT add it here — environment: overrides env_file.
     restart: unless-stopped

@@ -14,10 +14,11 @@ services:
     # service_postinst ALWAYS writes .env to guarantee the file exists.
     env_file:
       - .env
+    # WG_HOST / PASSWORD_HASH are supplied via env_file (seed = empty,
+    # service_postinst overwrites with wizard values). Do NOT add them to
+    # environment: — environment: overrides env_file and would shadow the wizard.
     environment:
       - TZ=Asia/Shanghai
-      - WG_HOST=${WG_HOST:-}
-      - PASSWORD_HASH=${PASSWORD_HASH:-}
     cap_add:
       - NET_ADMIN
       - SYS_MODULE

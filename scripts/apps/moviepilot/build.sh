@@ -15,6 +15,15 @@ sed -i "s/\${VERSION}/${VERSION}/g" "${WORK_DIR}/docker/docker-compose.yaml"
 # Seed .env so docker compose validates BEFORE service_postinst runs.
 # docker-compose.yaml declares env_file: [.env] which requires the file to
 # exist at compose validation time. service_postinst overwrites with wizard values.
+# Default SUPERUSER_PASSWORD=password matches MoviePilot's documented initial creds.
+cat > "${WORK_DIR}/docker/.env" <<'EOF'
+# Seed file shipped in fpk. Overwritten by service_postinst at install time.
+SUPERUSER_PASSWORD=password
+EOF
+
+# Seed .env so docker compose validates BEFORE service_postinst runs.
+# docker-compose.yaml declares env_file: [.env] which requires the file to
+# exist at compose validation time. service_postinst overwrites with wizard values.
 cat > "${WORK_DIR}/docker/.env" <<'EOF'
 # Seed file shipped in fpk. Will be overwritten by service_postinst.
 EOF

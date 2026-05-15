@@ -32,5 +32,7 @@ services:
       - PORT=3001
       - GITHUB_PROXY=https://gh-proxy.com/
       - SUPERUSER=admin
-      - SUPERUSER_PASSWORD=${SUPERUSER_PASSWORD:-password}
+      # SUPERUSER_PASSWORD is supplied via env_file (seed = 'password',
+      # service_postinst overwrites with wizard value). Do NOT add it to environment:
+      # — environment: overrides env_file and would shadow the wizard value.
     restart: unless-stopped

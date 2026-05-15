@@ -9,6 +9,9 @@ on:
     paths:
       - 'apps/**'
       - 'shared/**'
+      - 'scripts/apps/**'
+      - 'scripts/build-fpk.sh'
+      - 'scripts/ci/**'
       - '!**/*.md'
   schedule:
     - cron: '0 8 * * *'
