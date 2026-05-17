@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-17T08:39:40Z",
+  "generated_at": "2026-05-17T08:39:56Z",
   "source": {
     "name": "conversun/fnos-apps",
     "url": "https://github.com/conversun/fnos-apps"
@@ -938,9 +938,9 @@
       "file_prefix": "jackett",
       "display_name": "Jackett",
       "description": "Torrent 索引器代理，为 Sonarr/Radarr 等工具提供统一的搜索接口。",
-      "version": "0.24.1867",
-      "fpk_version": "0.24.1867",
-      "release_tag": "jackett/v0.24.1867",
+      "version": "0.24.1870",
+      "fpk_version": "0.24.1870",
+      "release_tag": "jackett/v0.24.1870",
       "service_port": 9117,
       "homepage_url": "https://github.com/Jackett/Jackett",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/jackett/fnos/ICON_256.PNG",
@@ -948,7 +948,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-16T08:31:50Z",
+      "updated_at": "2026-05-17T08:39:46Z",
       "download_count": 111,
       "app_type": "native",
       "category": "automation"
@@ -1191,9 +1191,9 @@
       "file_prefix": "localai",
       "display_name": "LocalAI",
       "description": "本地 AI 模型推理服务器，兼容 OpenAI API 接口。",
-      "version": "4.2.4",
-      "fpk_version": "4.2.4",
-      "release_tag": "localai/v4.2.4",
+      "version": "4.2.6",
+      "fpk_version": "4.2.6",
+      "release_tag": "localai/v4.2.6",
       "service_port": 8185,
       "homepage_url": "https://localai.io",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/localai/fnos/ICON_256.PNG",
@@ -1201,7 +1201,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-14T08:52:09Z",
+      "updated_at": "2026-05-17T08:39:38Z",
       "download_count": 91,
       "app_type": "docker",
       "category": "ai"
@@ -1466,9 +1466,9 @@
       "file_prefix": "nanobot",
       "display_name": "Nanobot",
       "description": "超轻量 AI 智能体框架，99% 更少代码量，支持多模型多通道，Web 管理面板，默认密码 admin/nanobot",
-      "version": "0.1.5.post3",
-      "fpk_version": "0.1.5.post3",
-      "release_tag": "nanobot/v0.1.5.post3",
+      "version": "0.2.0",
+      "fpk_version": "0.2.0",
+      "release_tag": "nanobot/v0.2.0",
       "service_port": 18780,
       "homepage_url": "https://github.com/HKUDS/nanobot",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/nanobot/fnos/ICON_256.PNG",
@@ -1476,7 +1476,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-06T17:11:17Z",
+      "updated_at": "2026-05-17T08:39:39Z",
       "download_count": 476,
       "app_type": "docker",
       "category": "ai"
