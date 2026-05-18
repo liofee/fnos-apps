@@ -576,3 +576,26 @@ fnOS 目前仅支持一层依赖检查。如果应用 A 依赖 B，B 依赖 C，
 ### 修订发布 (-rN) 是什么？
 
 当需要修复打包问题（如脚本 bug）但上游版本未变时，发布修订版本。CI 会自动在标签后追加 `-r1`、`-r2` 等后缀。用户需卸载后重新安装修订版。
+
+### Docker 应用如何接收安装向导填写的值？（密码 / Token / 管理员账号）
+
+**直接在 `docker-compose.yaml` 的 `environment:` 里用 `${wizard_字段名:-默认值}` 引用。** 不要用 `env_file`，不要写 `.env`，不要在 `service_postinst` 里 `sed` 改 compose。
+
+```yaml
+services:
+  myapp:
+    environment:
+      - APP_PASSWORD=${wizard_password:-changeme}
+```
+
+**根因（issue #146，踩了 5 个修订版才定位）**：fnOS 不通过 `docker compose` CLI 管理容器，而是直接调用 Docker API。由此带来三条硬约束：
+
+1. compose 里的 `env_file:` 指令被**完全忽略**
+2. compose 文件同目录的 `.env` **不会被自动发现**
+3. 容器在 `install_callback`（即 `service_postinst`）**之前**就已创建 —— 因此在 `service_postinst` 里写 `.env` 或 `sed` 改 `docker-compose.yaml` 都**太晚了**，容器拿到的还是旧值（moviepilot 的 `SUPERUSER_PASSWORD`、wg-easy、zonefoundry-bridge 都因此静默失效）
+
+正确做法之所以可行：fnOS 在创建容器**之前**会对 `docker-compose.yaml` 做变量替换，而安装向导字段本身就是环境变量（无 `TRIM_` 前缀，见「四、环境变量 / 向导相关变量」）。务必带 `:-默认值` 兜底，避免用户没填时容器拿到空值。
+
+**镜像特例（jlesage/* — firefox、chromium）**：这类镜像在**容器启动时**从持久卷重新读取凭据文件，绕开了「容器先于 postinst 创建」的时序问题。对 jlesage VNC 镜像，把密码写到数据卷的 `/config/.vncpass_clear` 即可。此模式**仅适用于**显式支持运行时读取凭据文件的镜像，其余一律用上面的 `${wizard_变量:-默认值}` compose 替换。
+
+> 参考：fnOS 官方机制说明 <https://github.com/ckcoding/fnnas-docs/blob/main/docs/core-concepts/environment-variables.md> ；可执行规则见 skill `fnos-new-app` → Phase 3B「Wizard Input → Container Environment」。
