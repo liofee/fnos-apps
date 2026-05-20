@@ -207,7 +207,7 @@ check_docker_image_exists() {
     fi
 
     local images
-    images="$(grep -E '^\s*image:' "$compose" | sed -E 's/^\s*image:\s*//; s/^"//; s/"$//' || true)"
+    images="$(grep -E '^[[:space:]]*image:' "$compose" | sed -E 's/^[[:space:]]*image:[[:space:]]*//; s/^"//; s/"$//' || true)"
     if [ -z "$images" ]; then
         warn "docker app but no 'image:' directives found in compose"
         return 0
@@ -218,6 +218,14 @@ check_docker_image_exists() {
         return 0
     fi
 
+    # Detect timeout wrapper (macOS lacks `timeout` by default; coreutils ships `gtimeout`)
+    local timeout_cmd=""
+    if command -v timeout >/dev/null 2>&1; then
+        timeout_cmd="timeout 30"
+    elif command -v gtimeout >/dev/null 2>&1; then
+        timeout_cmd="gtimeout 30"
+    fi
+
     while IFS= read -r raw_image; do
         local img="${raw_image//\$\{DOCKER_MIRROR\}/}"
         img="${img//\$\{VERSION\}/latest}"
@@ -226,7 +234,7 @@ check_docker_image_exists() {
             debug "image '$raw_image' has unresolved variables; skipping"
             continue
         fi
-        if timeout 30 docker manifest inspect "$img" >/dev/null 2>&1; then
+        if $timeout_cmd docker manifest inspect "$img" >/dev/null 2>&1; then
             pass "docker image accessible: $img"
         else
             fail "docker image NOT found in registry: $img (raw: $raw_image)"
