@@ -1,5 +1,11 @@
 ## 2026-05-21
 
+- 修复 metacubexd 在 /clash/ 子路径下无法连接 mihomo 后端的问题
+- dashboard 现在动态生成 /clash/config.js 让 metacubexd 自动通过 /mihomo 反代路径访问内核
+- 用户进入「高级管理」时无需手动填后端 URL, 直接可用
+
+## 2026-05-21
+
 - 修复 mihomo 内部 API 端口与系统中常见 Prometheus (默认 0.0.0.0:9090) 冲突的问题
 - mihomo external-controller 改为 127.0.0.1:19090 (冷门端口, 避开 fnOS 应用生态中已占用的 9090)
 - 用户侧无感: fnOS 暴露端口仍为 9097, dashboard 反代到新内部端口
