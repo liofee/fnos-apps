@@ -8,14 +8,14 @@
 LAN 浏览器 → :9097 (fnos-mihomo-dashboard)
                    ├─ /          fnOS 自研极简管理面板（订阅 + 状态 + 节点选择 + 日志）
                    ├─ /api/*     dashboard 自己的 REST API
-                   ├─ /mihomo/*  反代到 mihomo (127.0.0.1:9090)
+                   ├─ /mihomo/*  反代到 mihomo (127.0.0.1:19090)
                    └─ /ui/       MetaCubeXD 高级面板（高级用户）
 
-mihomo (127.0.0.1:9090) ← 仅本机访问, dashboard 管控所有配置写入
+mihomo (127.0.0.1:19090) ← 仅本机访问, dashboard 管控所有配置写入
        :7890           ← HTTP+SOCKS5 混合代理 (LAN 可达)
 ```
 
-**核心设计**：mihomo 的 `external-controller` 始终绑 `127.0.0.1:9090`，外界永远不直连 mihomo；所有配置变更经过 dashboard，避免端口漂移与 SAFE_PATHS 限制。
+**核心设计**：mihomo 的 `external-controller` 始终绑 `127.0.0.1:19090`，外界永远不直连 mihomo；所有配置变更经过 dashboard，避免端口漂移与 SAFE_PATHS 限制。
 
 ## 端口分配
 
@@ -24,7 +24,7 @@ mihomo (127.0.0.1:9090) ← 仅本机访问, dashboard 管控所有配置写入
 | 9097 | TCP | fnos-mihomo-dashboard (管理面板 + 反代) |
 | 7890 | TCP | HTTP + SOCKS5 混合代理 (LAN 可用) |
 | 1053 | UDP/TCP (localhost) | mihomo 内部 DNS (TUN 模式劫持 53) |
-| 9090 | TCP (localhost) | mihomo RESTful API (内部) |
+|  19090 | TCP (localhost) | mihomo RESTful API (内部) |
 
 ## 快速上手
 
@@ -63,7 +63,7 @@ dashboard 拥有此文件的写权限；用户可手动编辑，但建议通过 
 
 ## 关于配置漂移
 
-- ✓ `external-controller` 永远是 `127.0.0.1:9090`（dashboard 反代到这）
+- ✓ `external-controller` 永远是 `127.0.0.1:19090`（dashboard 反代到这）
 - ✓ `external-ui` 不需要（metacubexd 由 dashboard 在 `/ui/` 路径下托管）
 - ✓ 用户在 dashboard 改订阅 → dashboard 重写 yaml → mihomo `reload from path` → 不动 external-controller
 - ✓ MetaCubeXD 高级面板里的 "Update Config from URL" 仍可用，但**建议从主面板做**避免误操作

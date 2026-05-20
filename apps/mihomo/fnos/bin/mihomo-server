@@ -1,5 +1,5 @@
 #!/bin/bash
-# fnOS launcher: starts mihomo (internal 127.0.0.1:9090) + fnos-mihomo-dashboard
+# fnOS launcher: starts mihomo (internal 127.0.0.1:19090) + fnos-mihomo-dashboard
 # (the fnOS-facing port). Dashboard manages config.yaml + reverse-proxies mihomo,
 # so we never expose mihomo directly to the LAN; external-controller stays internal.
 APP_DIR="${TRIM_APPDEST}"
@@ -29,7 +29,7 @@ mode: rule
 log-level: info
 ipv6: false
 
-external-controller: 127.0.0.1:9090
+external-controller: 127.0.0.1:19090
 secret: ""
 
 dns:
@@ -73,8 +73,8 @@ if [ -f "$MIHOMO_PID_FILE" ]; then
     rm -f "$MIHOMO_PID_FILE"
 fi
 
-# Start mihomo in background (binds 127.0.0.1:9090 only)
-log_msg "Starting mihomo (internal 127.0.0.1:9090)"
+# Start mihomo in background (binds 127.0.0.1:19090 only)
+log_msg "Starting mihomo (internal 127.0.0.1:19090)"
 cd "$APP_DIR" || exit 1
 ./mihomo -d "$CONF_DIR" >> "$LOG_FILE" 2>&1 &
 echo $! > "$MIHOMO_PID_FILE"
@@ -86,7 +86,7 @@ sleep 2
 log_msg "Starting fnos-mihomo-dashboard on :${TRIM_SERVICE_PORT}"
 exec "$APP_DIR/fnos-mihomo-dashboard" \
     -listen ":${TRIM_SERVICE_PORT}" \
-    -mihomo-api "http://127.0.0.1:9090" \
+    -mihomo-api "http://127.0.0.1:19090" \
     -config "$CONFIG_FILE" \
     -log "$LOG_FILE" \
     -metacubexd "$UI_DIR"
