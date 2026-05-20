@@ -1,0 +1,15 @@
+{
+    ".url": {
+        "qinglong.Application":
+        {
+            "title": "QingLong",
+            "desc": "QingLong Cron Scheduler",
+            "icon": "images/{0}.png",
+            "type": "url",
+            "port": "5700",
+            "protocol": "http",
+            "url": "/",
+            "allUsers": true
+        }
+    }
+}

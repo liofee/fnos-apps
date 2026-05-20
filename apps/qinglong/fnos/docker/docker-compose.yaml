@@ -1,0 +1,14 @@
+services:
+  qinglong:
+    image: ${DOCKER_MIRROR}docker.io/whyour/qinglong:${VERSION}
+    container_name: qinglong
+    hostname: qinglong
+    ports:
+      - "${TRIM_SERVICE_PORT}:5700"
+    volumes:
+      - ${TRIM_PKGVAR:?}/data:/ql/data
+    environment:
+      - QlBaseUrl=/
+      - QlPort=5700
+      - TZ=Asia/Shanghai
+    restart: unless-stopped

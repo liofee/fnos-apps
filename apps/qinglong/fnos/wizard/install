@@ -1,0 +1,11 @@
+[
+    {
+        "stepTitle": "安装说明",
+        "items": [
+            {
+                "type": "tips",
+                "helpText": "青龙 (QingLong) 是支持 Python/JavaScript/Shell/TypeScript 的定时任务管理面板。<br><br>首次访问 Web 界面将引导您完成初始管理员账号设置。<br><br>访问 http://your-nas-ip:${TRIM_SERVICE_PORT} 即可开始使用。<br><br>核心功能：<br>- 内置 cron 定时任务调度 + PM2 进程管理<br>- 在线脚本编辑、运行日志查看、依赖管理<br>- 数据持久化目录：<code>/ql/data</code><br><br>更多文档详见 <a href='https://github.com/whyour/qinglong' target='_blank'>官方仓库</a>。"
+            }
+        ]
+    }
+]

@@ -1,0 +1,15 @@
+appname         = qinglong
+version         = 0.0.0
+display_name    = QingLong
+platform        = x86
+maintainer      = whyour
+maintainer_url  = https://github.com/whyour/qinglong
+distributor     = conversun
+distributor_url = https://github.com/conversun/fnos-apps
+desktop_uidir   = ui
+desktop_applaunchname = qinglong.Application
+service_port    = 5700
+checkport       = false
+desc            = 支持 Python/JavaScript/Shell/TypeScript 的定时任务管理面板
+source          = thirdparty
+checksum        =

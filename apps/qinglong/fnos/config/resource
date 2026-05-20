@@ -1,0 +1,25 @@
+{
+    "port-config": {
+        "protocol-file": "QingLong.sc"
+    },
+    "data-share": {
+        "shares": [
+            {
+                "name": "QingLong",
+                "permission": {
+                    "rw": [
+                        "qinglong"
+                    ]
+                }
+            }
+        ]
+    },
+    "docker-project": {
+        "projects": [
+            {
+                "name": "qinglong",
+                "path": "docker"
+            }
+        ]
+    }
+}
