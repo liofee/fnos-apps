@@ -1,5 +1,11 @@
 ## 2026-05-21
 
+- v0.2.2: 嵌入 Mozilla CA 证书包, dashboard 在无 ca-certificates 的极简 Linux 环境 (容器) 也能完成 HTTPS 订阅验证 / 拉取
+- 端到端自测覆盖: bad URL 拒绝 / 合法 URL 接受 / 备份文件 / 订阅信息 / 覆盖应用 / refresh
+- bump fnos-mihomo-dashboard 至 v0.2.2
+
+## 2026-05-21
+
 - v0.2.1: 自测修复
   - 保存订阅前预验证 URL: 拒绝 HTML 页面 (如 example.com 误填) / 4xx / 空响应 / 非 yaml 内容
   - 自测确认: 错误 URL 立即返回 400, 正确 URL 通过验证并被 mihomo 加载
