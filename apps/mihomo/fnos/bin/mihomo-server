@@ -4,90 +4,32 @@ APP_DATA_DIR=$1
 
 CONF_DIR="$APP_DATA_DIR/config"
 CONFIG_FILE="$CONF_DIR/config.yaml"
-# mihomo 限制 external-ui 路径必须在 home dir (-d 目录) 下或 SAFE_PATHS 中。
-# 解决方案：在 CONF_DIR 下 symlink 到实际 dashboard 静态文件目录，
-# yaml 中 external-ui 用相对路径 "metacubexd"（相对 CONF_DIR，在 home dir 内，通过安全检查）
 UI_DIR="metacubexd"
 UI_LINK="$CONF_DIR/metacubexd"
 UI_TARGET="$APP_DIR/metacubexd"
 LOG_FILE="$APP_DATA_DIR/mihomo.log"
 
-# 配置模板源：conversun 自维护的生产级 Clash 配置
-TEMPLATE_URL="https://hub.conversun.com/https://raw.githubusercontent.com/conversun/SurgeRule/main/Custom_Clash.yaml"
-DOWNLOAD_TIMEOUT=30
-
 mkdir -p "$CONF_DIR"
 
-# 创建 metacubexd symlink（sun-panel 同款模式）— 让 mihomo 能通过安全检查加载
+# metacubexd symlink — mihomo SAFE_PATHS 要求 external-ui 在 home dir 下
 if [ ! -L "$UI_LINK" ] && [ ! -e "$UI_LINK" ]; then
     ln -sf "$UI_TARGET" "$UI_LINK"
 fi
-
-# ==================== 函数 ====================
 
 log_msg() {
     ts="$(date '+%Y-%m-%d %H:%M:%S')"
     printf '[mihomo-server] %s %s\n' "$ts" "$*" | tee -a "$LOG_FILE" >&2
 }
 
-# 注入 fnOS 框架必需字段：
-#   - external-controller: 0.0.0.0:<TRIM_SERVICE_PORT>（每次启动强制）
-#   - external-ui: <APP_DIR>/metacubexd（每次启动强制，紧跟 ec 之后）
-#   - tun.enable: true → false（仅 first run；后续保留用户设置）
-#   - proxies: # {{xxx}} 占位符 → proxies: []
-# secret 不动；其他业务字段不动。
-# 用法: inject_framework_fields <src> <dst> <first|subsequent>
-inject_framework_fields() {
-    awk -v PORT="${TRIM_SERVICE_PORT}" -v UI="${UI_DIR}" -v MODE="$3" '
-    /^external-controller:/ {
-        if (!ec_done) {
-            print "external-controller: 0.0.0.0:" PORT
-            print "external-ui: " UI
-            ec_done = 1
-        }
-        next
-    }
-    /^external-ui:/ { next }
-    {
-        if ($0 ~ /^tun:/) { in_tun = 1 }
-        else if ($0 ~ /^[^ \t#]/) { in_tun = 0 }
-    }
-    MODE == "first" && in_tun && /^  enable: true/ {
-        sub(/enable: true/, "enable: false")
-        print
-        next
-    }
-    /^proxies:[ \t]*#/ {
-        print "proxies: []"
-        next
-    }
-    { print }
-    END {
-        if (!ec_done) {
-            print "external-controller: 0.0.0.0:" PORT
-            print "external-ui: " UI
-        }
-    }
-    ' "$1" > "$2"
-}
-
-# 验证配置（mihomo -t 退出码 0 = OK）；失败时把详细输出写入 LOG_FILE 以供排错
-validate_config() {
-    out=$("$APP_DIR/mihomo" -t -d "$CONF_DIR" 2>&1)
-    rc=$?
-    if [ "$rc" -ne 0 ]; then
-        printf '%s\n' "$out" | sed 's/^/[mihomo -t] /' | tee -a "$LOG_FILE" >&2
-    fi
-    return $rc
-}
-
-# 写入 minimal fallback（硬编码，保证可启动）
 write_minimal_config() {
-    cat > "$CONFIG_FILE" <<EOF
-# Mihomo Minimal Fallback Config
-# 此配置由 fnOS 自动降级机制生成，仅保证 mihomo + dashboard 能启动。
-# 完整模板可在 dashboard "Update Config from URL" 中拉取:
-#   $TEMPLATE_URL
+    cat > "$CONFIG_FILE" <<YAML
+# Mihomo 配置文件 (fnOS minimal default)
+# 完整字段参考: https://wiki.metacubex.one/config/
+#
+# 添加代理节点:
+#   1. SSH 或 fnOS 文件管理器编辑此文件
+#   2. 在 proxies: 下追加自己的节点 (Shadowsocks / V2Ray / Trojan / Hysteria2 等)
+#   3. 在 dashboard 点 "Reload Config", 或 fnOS 应用中心重启 Mihomo
 
 mixed-port: 7890
 allow-lan: true
@@ -109,6 +51,8 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
 
+# TUN 模式 (透明代理). 默认关闭. 安装时已 setcap 授权, 启用后直接生效:
+# 在 dashboard 的设置中开启, 或修改 enable: true
 tun:
   enable: false
   stack: system
@@ -117,72 +61,94 @@ tun:
   dns-hijack:
     - any:53
 
+
+
+# === 代理节点 (在此添加自己的节点) ===
 proxies: []
+
+# === 策略组 ===
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - DIRECT
+
+# === 分流规则 ===
 rules:
-  - GEOIP,CN,DIRECT
   - MATCH,PROXY
-EOF
+YAML
 }
 
-# ==================== 主流程 ====================
-
-# 阶段 1: 首次启动 — 下载完整模板
-if [ ! -f "$CONFIG_FILE" ]; then
-    TMP_FILE="$CONF_DIR/.config.yaml.downloading"
-    log_msg "First run: downloading config template from CDN..."
-
-    if curl -fsSL --max-time "$DOWNLOAD_TIMEOUT" -o "$TMP_FILE" "$TEMPLATE_URL"; then
-        log_msg "Template downloaded ($(wc -c <"$TMP_FILE") bytes)"
-        inject_framework_fields "$TMP_FILE" "$CONFIG_FILE" "first"
-        rm -f "$TMP_FILE"
-        log_msg "Initial config prepared at $CONFIG_FILE"
-    else
-        log_msg "WARN: template download failed, using minimal fallback config"
-        rm -f "$TMP_FILE"
-        write_minimal_config
+# 验证配置 (mihomo -t 退出码 0 = OK); 失败时把错误输出到 LOG_FILE
+validate_config() {
+    out=$("$APP_DIR/mihomo" -t -d "$CONF_DIR" 2>&1)
+    rc=$?
+    if [ "$rc" -ne 0 ]; then
+        printf '%s\n' "$out" | sed 's/^/[mihomo -t] /' | tee -a "$LOG_FILE" >&2
     fi
+    return $rc
+}
+
+# 强制注入 fnOS 框架必需字段 (external-controller 端口 + external-ui 路径)
+# 防止用户在 dashboard 改坏后 dashboard 进不去
+inject_framework_fields() {
+    awk -v PORT="${TRIM_SERVICE_PORT}" -v UI="${UI_DIR}" '
+    /^external-controller:/ {
+        if (!ec_done) {
+            print "external-controller: 0.0.0.0:" PORT
+            print "external-ui: " UI
+            ec_done = 1
+        }
+        next
+    }
+    /^external-ui:/ { next }
+    { print }
+    END {
+        if (!ec_done) {
+            print "external-controller: 0.0.0.0:" PORT
+            print "external-ui: " UI
+        }
+    }
+    ' "$1" > "$2"
+}
+
+# === 主流程 ===
+
+# 阶段 1: 首次启动 - 写入 minimal config
+if [ ! -f "$CONFIG_FILE" ]; then
+    log_msg "First run: writing minimal default config at $CONFIG_FILE"
+    write_minimal_config
 fi
 
-# 阶段 2: 每次启动强制注入框架字段（防 dashboard "Update Config from URL" 后失联）
+# 阶段 2: 每次启动强制注入框架字段 (防 dashboard 改坏)
 TMP_PATCHED="$CONF_DIR/.config.yaml.patching"
-inject_framework_fields "$CONFIG_FILE" "$TMP_PATCHED" "subsequent"
+inject_framework_fields "$CONFIG_FILE" "$TMP_PATCHED"
 if ! cmp -s "$CONFIG_FILE" "$TMP_PATCHED"; then
-    log_msg "WARN: fnOS framework fields drifted (external-controller/external-ui), restoring forcefully"
+    log_msg "WARN: fnOS framework fields drifted (external-controller / external-ui), restoring"
     mv "$TMP_PATCHED" "$CONFIG_FILE"
 else
     rm -f "$TMP_PATCHED"
 fi
 
-# 阶段 3: 验证配置 + 自动降级
+# 阶段 3: mihomo -t 预校验 + 自动降级
 if ! validate_config; then
     TS="$(date +%Y%m%d-%H%M%S)"
     FAILED="$CONF_DIR/config.failed-${TS}.yaml"
     cp "$CONFIG_FILE" "$FAILED"
 
     log_msg "==========================================="
-    log_msg "WARNING: CONFIG VALIDATION FAILED — AUTO-FALLBACK ACTIVATED"
+    log_msg "CONFIG VALIDATION FAILED - AUTO-FALLBACK"
     log_msg "==========================================="
-    log_msg "原配置语法错误或字段无效，已备份至: $FAILED"
-    log_msg ""
-    log_msg "已切换到 minimal fallback 配置，dashboard 仍可访问:"
+    log_msg "原配置语法错误, 已备份至: $FAILED"
+    log_msg "已切换到 minimal default, dashboard 仍可访问:"
     log_msg "  http://<NAS_IP>:${TRIM_SERVICE_PORT}/ui/"
-    log_msg ""
-    log_msg "在 dashboard 中可以:"
-    log_msg "  1. 查看「日志」页签了解错误原因"
-    log_msg "  2. 编辑「配置」页签修复后保存"
-    log_msg "  3. 「Update Config from URL」从 CDN 重新拉取模板:"
-    log_msg "     $TEMPLATE_URL"
+    log_msg "排错: SSH 编辑 $CONFIG_FILE 后重启应用"
     log_msg "==========================================="
 
     write_minimal_config
 
     if ! validate_config; then
-        log_msg "FATAL: minimal fallback also failed validation. mihomo will not start."
+        log_msg "FATAL: minimal default also failed validation. mihomo will not start."
         exit 1
     fi
 fi

@@ -9,6 +9,6 @@ distributor_url = https://github.com/conversun/fnos-apps
 desktop_uidir   = ui
 desktop_applaunchname = mihomo.Application
 service_port    = 9097
-desc            = Mihomo (Clash.Meta) 多协议代理内核，内置 MetaCubeXD 可视化面板
+desc            = Clash.Meta 多协议代理 + MetaCubeXD 面板 (管理:9097 代理:7890)
 source          = thirdparty
 checksum        = 
