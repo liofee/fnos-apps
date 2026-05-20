@@ -6,41 +6,37 @@ PID_FILE="${TRIM_PKGVAR}/${TRIM_APPNAME}.pid"
 APP_DIR="${TRIM_APPDEST}"
 APP_DATA_DIR="${TRIM_PKGVAR}"
 
+# fnOS-tracked PID = fnos-mihomo-dashboard (foreground).
+# mihomo runs as backgrounded child with its own PID in mihomo.pid.
 SERVICE_COMMAND="$APP_DIR/bin/mihomo-server $APP_DATA_DIR"
 SVC_BACKGROUND=y
 SVC_WRITE_PID=y
-
-# mihomo 首次启动需要下载 GeoIP/GeoSite 数据库，延长等待时间
 SVC_WAIT_TIMEOUT=30
 
-# 安装后授予 mihomo 二进制 TUN 模式所需的 capabilities：
-#   CAP_NET_ADMIN         配置网络接口（TUN 设备 / 路由表）
-#   CAP_NET_RAW           创建 raw socket（透明代理 / TProxy）
-#   CAP_NET_BIND_SERVICE  绑定 < 1024 端口（可选，未来用 53/80/443）
-# 通过 file capabilities 实现非 root 运行 + TUN 模式，比 run-as: root 更安全
+# Grant mihomo binary the capabilities needed for TUN mode (CAP_NET_ADMIN/RAW/BIND_SERVICE).
 service_postinst() {
     if command -v setcap >/dev/null 2>&1; then
         setcap 'cap_net_admin,cap_net_raw,cap_net_bind_service+ep' \
             "${TRIM_APPDEST}/mihomo" 2>/dev/null || \
             echo "WARN: setcap failed; TUN mode may require manual setup" >> "${LOG_FILE}"
-    else
-        echo "WARN: setcap not available; TUN mode will not work" >> "${LOG_FILE}"
     fi
 }
-
-# 升级后二进制被替换，需要重新授权
-service_postupgrade() {
-    service_postinst
-}
+service_postupgrade() { service_postinst; }
 
 service_preuninst() {
-    # 兜底：确保 mihomo 进程被完全终止
-    # 使用 -x 精确匹配进程名，避免误杀含 "mihomo" 参数的其他进程
+    # Kill mihomo subprocess via its private PID file first
+    if [ -f "${TRIM_PKGVAR}/mihomo-kernel.pid" ]; then
+        kill "$(cat "${TRIM_PKGVAR}/mihomo-kernel.pid")" 2>/dev/null
+        sleep 1
+        kill -9 "$(cat "${TRIM_PKGVAR}/mihomo-kernel.pid")" 2>/dev/null
+        rm -f "${TRIM_PKGVAR}/mihomo-kernel.pid"
+    fi
+    # Sweep both binaries by name (-x for exact match, avoids killing appcenter-cli args)
+    pkill -x "fnos-mihomo-dashboard" 2>/dev/null || true
     pkill -x "mihomo" 2>/dev/null || true
     sleep 1
+    pkill -9 -x "fnos-mihomo-dashboard" 2>/dev/null || true
     pkill -9 -x "mihomo" 2>/dev/null || true
 }
 
-service_poststop() {
-    service_preuninst
-}
+service_poststop() { service_preuninst; }

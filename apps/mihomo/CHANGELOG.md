@@ -1,14 +1,13 @@
 ## 2026-05-20
 
 - 首次发布
-- mihomo (Clash.Meta) 内核 + MetaCubeXD dashboard 一体化打包
-- 默认管理端口 9097 (避开 9090 与现有 Prometheus 冲突)
-- 默认混合代理端口 7890 (HTTP + SOCKS5), 暴露至 LAN
-- 安装时通过 setcap 授予 CAP_NET_ADMIN / CAP_NET_RAW / CAP_NET_BIND_SERVICE, 支持 TUN 模式
-- 零外部依赖: minimal default 配置硬编码在 bin/mihomo-server, 不依赖任何远程模板 / CDN
-- **关键修复**: 注入 fnOS framework guard JS 到 metacubexd index.html, 拦截 dashboard 的 PUT /configs 请求,
-  自动改写 payload 中的 external-controller / external-ui 为 fnOS 必需值。
-  解决用户在 dashboard "Update Config from URL" 加载自己的订阅模板时, mihomo 切换到
-  上游 external-controller (如 127.0.0.1:9090) 导致 dashboard 失联 / 看似 cancel 的问题。
-  现在用户可在 dashboard 直接加载自己的 Clash 订阅 URL, 立即生效。
-- 三层故障防线: 每次启动强制注入框架字段 + mihomo -t 预校验 + 验证失败自动降级到 minimal default
+- mihomo (Clash.Meta) 内核 + 自研 fnos-mihomo-dashboard 管理面板 + MetaCubeXD 高级面板一体化打包
+- **架构调整**：dashboard (port 9097) 反代 mihomo (127.0.0.1:9090)，彻底解决：
+  - SAFE_PATHS: dashboard 用反代而非 external-ui，无路径检查
+  - external-controller 漂移: mihomo 通过文件加载配置，不接受 dashboard payload 中的 external-controller 字段
+  - 浏览器 fetch 拦截脆弱: 全部由服务端 dashboard 控制，无需 JS hook
+- 主面板提供订阅管理 / 状态 / 节点选择 / 日志（覆盖 90% 日常场景）
+- 保留 MetaCubeXD 在 `/ui/` 作为高级用户的逃生通道
+- 默认端口: 9097 (管理), 7890 (HTTP+SOCKS5 代理)
+- 安装时通过 setcap 授权支持 TUN 模式
+- 双进程托管: bin/mihomo-server 启动 mihomo 子进程 + dashboard 前台主进程，挂任一可恢复

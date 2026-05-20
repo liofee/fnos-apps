@@ -13,6 +13,10 @@ APP_DEPS=(curl unzip gunzip tar)
 APP_FPK_PREFIX="mihomo"
 APP_HELP_VERSION_EXAMPLE="1.19.25"
 
+# fnos-mihomo-dashboard release (independent versioning from mihomo)
+DASHBOARD_REPO="conversun/fnos-mihomo-dashboard"
+DASHBOARD_VERSION="${DASHBOARD_VERSION:-latest}"
+
 app_set_arch_vars() {
     case "$ARCH" in
         x86) TARBALL_ARCH="amd64" ;;
@@ -30,63 +34,68 @@ EOF
 
 app_get_latest_version() {
     info "获取最新版本信息..."
-
     local tag
     tag=$(curl -sL "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" 2>/dev/null | \
         grep '"tag_name":' | sed -E 's/.*"v?([^"]+)".*/\1/')
-
     if [ "$APP_VERSION" = "latest" ]; then
         APP_VERSION="$tag"
     fi
-
     [ -z "$APP_VERSION" ] && error "无法获取版本信息，请手动指定: $0 1.19.25"
+    info "Mihomo 版本: $APP_VERSION"
 
-    info "目标版本: $APP_VERSION"
+    if [ "$DASHBOARD_VERSION" = "latest" ]; then
+        DASHBOARD_VERSION=$(curl -sL "https://api.github.com/repos/${DASHBOARD_REPO}/releases/latest" 2>/dev/null | \
+            grep '"tag_name":' | sed -E 's/.*"(v?[^"]+)".*/\1/')
+        [ -z "$DASHBOARD_VERSION" ] && error "无法获取 fnos-mihomo-dashboard 版本"
+    fi
+    info "Dashboard 版本: $DASHBOARD_VERSION"
 }
 
 app_download() {
-    local mihomo_url="https://github.com/MetaCubeX/mihomo/releases/download/v${APP_VERSION}/mihomo-linux-${TARBALL_ARCH}-v${APP_VERSION}.gz"
-    local metacubexd_url="https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
-
-    info "下载 mihomo ($ARCH): $mihomo_url"
     mkdir -p "$WORK_DIR"
-    curl -L -f -o "$WORK_DIR/mihomo.gz" "$mihomo_url" || error "下载 mihomo 失败"
-    info "已下载 mihomo: $(du -h "$WORK_DIR/mihomo.gz" | cut -f1)"
 
-    info "下载 metacubexd dashboard: $metacubexd_url"
+    local mihomo_url="https://github.com/MetaCubeX/mihomo/releases/download/v${APP_VERSION}/mihomo-linux-${TARBALL_ARCH}-v${APP_VERSION}.gz"
+    info "下载 mihomo: $mihomo_url"
+    curl -L -f -o "$WORK_DIR/mihomo.gz" "$mihomo_url" || error "下载 mihomo 失败"
+
+    local metacubexd_url="https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
+    info "下载 metacubexd: $metacubexd_url"
     curl -L -f -o "$WORK_DIR/metacubexd.zip" "$metacubexd_url" || error "下载 metacubexd 失败"
-    info "已下载 metacubexd: $(du -h "$WORK_DIR/metacubexd.zip" | cut -f1)"
+
+    local dashboard_url="https://github.com/${DASHBOARD_REPO}/releases/download/${DASHBOARD_VERSION}/fnos-mihomo-dashboard-linux-${TARBALL_ARCH}"
+    info "下载 fnos-mihomo-dashboard: $dashboard_url"
+    curl -L -f -o "$WORK_DIR/fnos-mihomo-dashboard" "$dashboard_url" || error "下载 fnos-mihomo-dashboard 失败"
+
+    info "已下载:"
+    info "  mihomo:                    $(du -h "$WORK_DIR/mihomo.gz" | cut -f1)"
+    info "  metacubexd:                $(du -h "$WORK_DIR/metacubexd.zip" | cut -f1)"
+    info "  fnos-mihomo-dashboard:     $(du -h "$WORK_DIR/fnos-mihomo-dashboard" | cut -f1)"
 }
 
 app_build_app_tgz() {
     info "解压制品..."
     cd "$WORK_DIR"
 
-    # mihomo 二进制
     gunzip -c mihomo.gz > mihomo
     chmod +x mihomo
 
-    # metacubexd 静态文件（gh-pages 归档顶层目录为 metacubexd-gh-pages）
     unzip -q metacubexd.zip
     [ ! -d "metacubexd-gh-pages" ] && error "未找到 metacubexd-gh-pages 目录"
+
+    chmod +x fnos-mihomo-dashboard
 
     info "构建 app.tgz..."
     local dst="$WORK_DIR/app_root"
     mkdir -p "$dst/bin" "$dst/ui" "$dst/metacubexd"
 
-    # mihomo 二进制
     cp "$WORK_DIR/mihomo" "$dst/mihomo"
     chmod +x "$dst/mihomo"
 
-    # metacubexd 静态文件
+    cp "$WORK_DIR/fnos-mihomo-dashboard" "$dst/fnos-mihomo-dashboard"
+    chmod +x "$dst/fnos-mihomo-dashboard"
+
     cp -a "$WORK_DIR/metacubexd-gh-pages/." "$dst/metacubexd/"
 
-    # 注入 fnOS framework guard patch (拦截 dashboard PUT /configs 改写 external-controller 避免端口漂移)
-    cp "$PKG_DIR/patches/fnos-patch.js" "$dst/metacubexd/fnos-patch.js"
-    sed -i.bak 's|</body>|<script src="./fnos-patch.js"></script></body>|' "$dst/metacubexd/index.html"
-    rm -f "$dst/metacubexd/index.html.bak"
-
-    # fnOS 框架文件
     cp "$PKG_DIR/bin/mihomo-server" "$dst/bin/mihomo-server"
     chmod +x "$dst/bin/mihomo-server"
 

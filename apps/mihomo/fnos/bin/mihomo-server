@@ -1,48 +1,27 @@
-#!/bin/sh
+#!/bin/bash
+# fnOS launcher: starts mihomo (internal 127.0.0.1:9090) + fnos-mihomo-dashboard
+# (the fnOS-facing port). Dashboard manages config.yaml + reverse-proxies mihomo,
+# so we never expose mihomo directly to the LAN; external-controller stays internal.
 APP_DIR="${TRIM_APPDEST}"
 APP_DATA_DIR=$1
 
 CONF_DIR="$APP_DATA_DIR/config"
 CONFIG_FILE="$CONF_DIR/config.yaml"
-UI_DIR="metacubexd"
-UI_RUNTIME_DIR="$CONF_DIR/metacubexd"
-UI_SOURCE_DIR="$APP_DIR/metacubexd"
 LOG_FILE="$APP_DATA_DIR/mihomo.log"
+MIHOMO_PID_FILE="$APP_DATA_DIR/mihomo-kernel.pid"
+UI_DIR="$APP_DIR/metacubexd"
 
 mkdir -p "$CONF_DIR"
 
-# 在 CONF_DIR 下重建 metacubexd 目录 (代替 symlink) ——每次启动重生以保证:
-#   1. mihomo SAFE_PATHS 检查通过 (external-ui 在 home dir 下)
-#   2. fnos-patch.js 中的端口与当前 TRIM_SERVICE_PORT 一致 (用户可能在 fnOS 改过端口)
-if [ -L "$UI_RUNTIME_DIR" ]; then
-    rm -f "$UI_RUNTIME_DIR"
-elif [ -d "$UI_RUNTIME_DIR" ]; then
-    rm -rf "$UI_RUNTIME_DIR"
-fi
-mkdir -p "$UI_RUNTIME_DIR"
-cp -a "$UI_SOURCE_DIR/." "$UI_RUNTIME_DIR/"
-
-# 将 fnos-patch.js 中的 __FNOS_PORT__ 占位符替换为实际 fnOS 服务端口
-if [ -f "$UI_RUNTIME_DIR/fnos-patch.js" ]; then
-    sed -i.bak "s|__FNOS_PORT__|${TRIM_SERVICE_PORT}|g" "$UI_RUNTIME_DIR/fnos-patch.js"
-    rm -f "$UI_RUNTIME_DIR/fnos-patch.js.bak"
-fi
-
 log_msg() {
-    ts="$(date '+%Y-%m-%d %H:%M:%S')"
-    printf '[mihomo-server] %s %s\n' "$ts" "$*" | tee -a "$LOG_FILE" >&2
+    printf '[mihomo-server] %s %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" | tee -a "$LOG_FILE" >&2
 }
 
-write_minimal_config() {
+# First-run minimal config: dashboard will mutate proxy-providers/proxy-groups as
+# the user sets subscription URL. external-controller stays bound to localhost.
+if [ ! -f "$CONFIG_FILE" ]; then
+    log_msg "First run: writing minimal config.yaml"
     cat > "$CONFIG_FILE" <<YAML
-# Mihomo 配置文件 (fnOS minimal default)
-# 完整字段参考: https://wiki.metacubex.one/config/
-#
-# 添加代理节点:
-#   1. SSH 或 fnOS 文件管理器编辑此文件
-#   2. 在 proxies: 下追加自己的节点 (Shadowsocks / V2Ray / Trojan / Hysteria2 等)
-#   3. 在 dashboard 点 "Reload Config", 或 fnOS 应用中心重启 Mihomo
-
 mixed-port: 7890
 allow-lan: true
 bind-address: '*'
@@ -50,8 +29,7 @@ mode: rule
 log-level: info
 ipv6: false
 
-external-controller: 0.0.0.0:${TRIM_SERVICE_PORT}
-external-ui: ${UI_DIR}
+external-controller: 127.0.0.1:9090
 secret: ""
 
 dns:
@@ -63,8 +41,6 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
 
-# TUN 模式 (透明代理). 默认关闭. 安装时已 setcap 授权, 启用后直接生效:
-# 在 dashboard 的设置中开启, 或修改 enable: true
 tun:
   enable: false
   stack: system
@@ -73,98 +49,44 @@ tun:
   dns-hijack:
     - any:53
 
-
-
-# === 代理节点 (在此添加自己的节点) ===
 proxies: []
 
-# === 策略组 ===
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - DIRECT
 
-# === 分流规则 ===
 rules:
   - MATCH,PROXY
 YAML
-}
+fi
 
-# 验证配置 (mihomo -t 退出码 0 = OK); 失败时把错误输出到 LOG_FILE
-validate_config() {
-    out=$("$APP_DIR/mihomo" -t -d "$CONF_DIR" 2>&1)
-    rc=$?
-    if [ "$rc" -ne 0 ]; then
-        printf '%s\n' "$out" | sed 's/^/[mihomo -t] /' | tee -a "$LOG_FILE" >&2
+# Cleanup any leftover mihomo from a crash
+if [ -f "$MIHOMO_PID_FILE" ]; then
+    OLD_PID=$(cat "$MIHOMO_PID_FILE" 2>/dev/null)
+    if [ -n "$OLD_PID" ] && kill -0 "$OLD_PID" 2>/dev/null; then
+        kill "$OLD_PID" 2>/dev/null
+        sleep 1
+        kill -9 "$OLD_PID" 2>/dev/null
     fi
-    return $rc
-}
-
-# 强制注入 fnOS 框架必需字段 (external-controller 端口 + external-ui 路径)
-# 防止用户在 dashboard 改坏后 dashboard 进不去
-inject_framework_fields() {
-    awk -v PORT="${TRIM_SERVICE_PORT}" -v UI="${UI_DIR}" '
-    /^external-controller:/ {
-        if (!ec_done) {
-            print "external-controller: 0.0.0.0:" PORT
-            print "external-ui: " UI
-            ec_done = 1
-        }
-        next
-    }
-    /^external-ui:/ { next }
-    { print }
-    END {
-        if (!ec_done) {
-            print "external-controller: 0.0.0.0:" PORT
-            print "external-ui: " UI
-        }
-    }
-    ' "$1" > "$2"
-}
-
-# === 主流程 ===
-
-# 阶段 1: 首次启动 - 写入 minimal config
-if [ ! -f "$CONFIG_FILE" ]; then
-    log_msg "First run: writing minimal default config at $CONFIG_FILE"
-    write_minimal_config
+    rm -f "$MIHOMO_PID_FILE"
 fi
 
-# 阶段 2: 每次启动强制注入框架字段 (防 dashboard 改坏)
-TMP_PATCHED="$CONF_DIR/.config.yaml.patching"
-inject_framework_fields "$CONFIG_FILE" "$TMP_PATCHED"
-if ! cmp -s "$CONFIG_FILE" "$TMP_PATCHED"; then
-    log_msg "WARN: fnOS framework fields drifted (external-controller / external-ui), restoring"
-    mv "$TMP_PATCHED" "$CONFIG_FILE"
-else
-    rm -f "$TMP_PATCHED"
-fi
-
-# 阶段 3: mihomo -t 预校验 + 自动降级
-if ! validate_config; then
-    TS="$(date +%Y%m%d-%H%M%S)"
-    FAILED="$CONF_DIR/config.failed-${TS}.yaml"
-    cp "$CONFIG_FILE" "$FAILED"
-
-    log_msg "==========================================="
-    log_msg "CONFIG VALIDATION FAILED - AUTO-FALLBACK"
-    log_msg "==========================================="
-    log_msg "原配置语法错误, 已备份至: $FAILED"
-    log_msg "已切换到 minimal default, dashboard 仍可访问:"
-    log_msg "  http://<NAS_IP>:${TRIM_SERVICE_PORT}/ui/"
-    log_msg "排错: SSH 编辑 $CONFIG_FILE 后重启应用"
-    log_msg "==========================================="
-
-    write_minimal_config
-
-    if ! validate_config; then
-        log_msg "FATAL: minimal default also failed validation. mihomo will not start."
-        exit 1
-    fi
-fi
-
-# 阶段 4: 启动 mihomo
+# Start mihomo in background (binds 127.0.0.1:9090 only)
+log_msg "Starting mihomo (internal 127.0.0.1:9090)"
 cd "$APP_DIR" || exit 1
-exec ./mihomo -d "$CONF_DIR"
+./mihomo -d "$CONF_DIR" >> "$LOG_FILE" 2>&1 &
+echo $! > "$MIHOMO_PID_FILE"
+
+# Wait briefly for mihomo to be ready
+sleep 2
+
+# Start dashboard as foreground (fnOS PID file tracks this)
+log_msg "Starting fnos-mihomo-dashboard on :${TRIM_SERVICE_PORT}"
+exec "$APP_DIR/fnos-mihomo-dashboard" \
+    -listen ":${TRIM_SERVICE_PORT}" \
+    -mihomo-api "http://127.0.0.1:9090" \
+    -config "$CONFIG_FILE" \
+    -log "$LOG_FILE" \
+    -metacubexd "$UI_DIR"

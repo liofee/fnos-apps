@@ -1,53 +1,57 @@
 # Mihomo for fnOS
 
-[Mihomo](https://github.com/MetaCubeX/mihomo)(前 Clash.Meta)多协议代理内核 + [MetaCubeXD](https://github.com/MetaCubeX/metacubexd) 可视化面板, 打包为 fnOS 第三方应用. 零外部依赖, 安装即可用.
+[Mihomo](https://github.com/MetaCubeX/mihomo) (前 Clash.Meta) 多协议代理内核 + 自研轻量管理面板 [fnos-mihomo-dashboard](https://github.com/conversun/fnos-mihomo-dashboard) + [MetaCubeXD](https://github.com/MetaCubeX/metacubexd) 高级管理面板的一体化打包。
 
-## 功能特性
+## 架构
 
-- **多协议代理**: Shadowsocks / V2Ray / Trojan / Hysteria2 / WireGuard / Tuic 等
-- **可视化面板**: `http://<NAS_IP>:9097/ui/`
-- **混合代理端口**: `7890/tcp` (HTTP + SOCKS5 同端口), 默认监听 `0.0.0.0`, LAN 内任意设备可用
-- **TUN 模式**: 默认关闭, 可在 dashboard 启用, 安装时已通过 `setcap` 授予所需 Linux capabilities
-- **GeoIP / GeoSite 自动更新**: 通过 ghfast.top CDN 加速, 每 24 小时刷新
-- **零外部依赖**: 不下载远程模板, 不依赖第三方 repo
+```
+LAN 浏览器 → :9097 (fnos-mihomo-dashboard)
+                   ├─ /          fnOS 自研极简管理面板（订阅 + 状态 + 节点选择 + 日志）
+                   ├─ /api/*     dashboard 自己的 REST API
+                   ├─ /mihomo/*  反代到 mihomo (127.0.0.1:9090)
+                   └─ /ui/       MetaCubeXD 高级面板（高级用户）
+
+mihomo (127.0.0.1:9090) ← 仅本机访问, dashboard 管控所有配置写入
+       :7890           ← HTTP+SOCKS5 混合代理 (LAN 可达)
+```
+
+**核心设计**：mihomo 的 `external-controller` 始终绑 `127.0.0.1:9090`，外界永远不直连 mihomo；所有配置变更经过 dashboard，避免端口漂移与 SAFE_PATHS 限制。
 
 ## 端口分配
 
 | 端口 | 协议 | 用途 |
 |------|------|------|
-| 9097 | TCP | 外部管理 API + MetaCubeXD dashboard |
-| 7890 | TCP | HTTP + SOCKS5 混合代理 |
-| 1053 | UDP/TCP (localhost) | 内部 DNS (TUN 模式下劫持 53 端口) |
+| 9097 | TCP | fnos-mihomo-dashboard (管理面板 + 反代) |
+| 7890 | TCP | HTTP + SOCKS5 混合代理 (LAN 可用) |
+| 1053 | UDP/TCP (localhost) | mihomo 内部 DNS (TUN 模式劫持 53) |
+| 9090 | TCP (localhost) | mihomo RESTful API (内部) |
 
 ## 快速上手
 
-### 1. 安装并打开 dashboard
+### 1. 安装并打开管理面板
 
-在 fnOS 应用中心点击 Mihomo 图标, 浏览器自动打开 `http://<NAS_IP>:9097/ui/`. dashboard 默认无 secret, 可在「设置」中修改.
+在 fnOS 应用中心安装 Mihomo，自动启动后浏览器打开 `http://<NAS_IP>:9097/`。看到自研的极简面板。
 
-### 2. 添加代理节点 (推荐: dashboard 直接拉订阅)
+### 2. 添加代理订阅
 
-**最简方式**: dashboard 顶部 「配置」 (Config) 或 「概览」 (Overview) → 找到 "Update Config from URL" 入口 → 粘贴自己的 Clash 格式订阅 URL → 立即生效。
+在「订阅管理」输入你的 Clash 订阅 URL → 「保存并应用」。dashboard 会：
+- 把订阅 URL 写入 mihomo 的 `proxy-providers.fnos-subscription`
+- 让 PROXY 策略组通过 `use: [fnos-subscription]` 引用此订阅
+- 通过 mihomo `/configs?path=...` API 触发重载（**不动 `external-controller`**，dashboard 永远不掉线）
 
-本应用预置了 fnOS framework guard JS 拦截器, 会自动把订阅配置中的 ``external-controller`` 和 ``external-ui`` 改写为 fnOS 端口, 避免 mihomo 切端口导致 dashboard 失联。
+mihomo 自动每 24 小时刷新订阅节点。
 
-**其他方式** (需要本地整理的用户):
+### 3. 选择节点
 
-- SSH: ``nano /vol*/apps/mihomo/var/config/config.yaml``
-- fnOS 文件管理器编辑 ``apps/mihomo/var/config/config.yaml``
-- proxy-providers 模式 → mihomo 定期自动拉订阅
+「节点选择」面板里点击想用的节点。
 
-### 3. 重新加载配置
+### 4. 启用 TUN 模式（可选）
 
-任选其一:
-- dashboard → 点击「Reload Config」按钮 (右上角或设置区域, 取决于 dashboard 主题)
-- fnOS 应用中心 → Mihomo → 重启
+透明代理整个 NAS 出口流量：编辑 `${TRIM_PKGVAR}/config/config.yaml` 改 `tun.enable: true`，dashboard 点「重载」。安装时已通过 `setcap` 授予 `CAP_NET_ADMIN/NET_RAW/NET_BIND_SERVICE`。
 
-### 4. 启用 TUN 模式 (可选)
+### 5. 进入 MetaCubeXD 高级面板（可选）
 
-透明代理整个 NAS 出口流量:
-- 编辑 config.yaml 中 `tun.enable: true`
-- 或 dashboard → 「设置」→ 开启 TUN
+dashboard 右上角「高级管理 (MetaCubeXD) →」按钮，进入功能完整的 metacubexd（看实时连接、流量、规则调试）。
 
 ## 配置文件位置
 
@@ -55,52 +59,52 @@
 ${TRIM_PKGVAR}/config/config.yaml
 ```
 
-## 故障排查 (三层防线)
+dashboard 拥有此文件的写权限；用户可手动编辑，但建议通过 dashboard 操作避免冲突。
 
-mihomo + dashboard 是强耦合体系, 本应用通过分层降级保证用户永远不会失联.
+## 关于配置漂移
 
-### 第 1 层 [99% 情况]: mihomo 正常运行
-
-用户通过 dashboard (`http://<NAS_IP>:9097/ui/`) 控制一切:
-- 切换代理节点 / 策略组
-- 看实时流量与连接
-- 查看运行日志
-- 切换 mode / log-level / TUN 等基本字段
-
-注意: metacubexd dashboard **不支持**直接编辑 yaml 配置, 编辑请用 SSH 或文件管理器.
-
-### 第 2 层 [config.yaml 错误]: 自动降级
-
-每次启动前 `mihomo -t` 验证配置:
-- 验证通过 → 正常启动
-- 验证失败 → 备份原配置到 `config.failed-<timestamp>.yaml`, 切换到 minimal default, **dashboard 仍可访问**
-- 日志中会写明备份位置与恢复步骤
-
-### 第 3 层 [极端情况]: minimal default 也挂
-
-- **fnOS 应用中心 → Mihomo → 查看日志**: 所有 mihomo 启动错误都写在 `${TRIM_PKGVAR}/mihomo.log`
-- **SSH / 文件管理器编辑** `/vol*/apps/mihomo/var/config/config.yaml`
-- **重置配置**: 删除 `config.yaml` 后重启应用, 会自动重新生成 minimal default
-
-## 端口 / 字段管理边界
-
-| 字段 | 谁管 | 说明 |
-|------|------|------|
-| `external-controller` 端口 | **fnOS 框架强制** | 每次启动还原为 `0.0.0.0:<manifest.service_port>` |
-| `external-ui` 路径 | **fnOS 框架强制** | 每次启动还原为 `metacubexd` (相对 home dir, symlink 到只读 dashboard 目录) |
-| `secret` | **用户管理** | 默认为空, 可在 dashboard 设置 |
-| `tun.enable` | **用户管理** | 默认关闭, 启用前已通过 setcap 授权 |
-| `proxies` / `proxy-providers` / `rules` / 其他业务字段 | **用户管理** | dashboard 仅查看, 编辑请用 SSH 或文件管理器 |
+- ✓ `external-controller` 永远是 `127.0.0.1:9090`（dashboard 反代到这）
+- ✓ `external-ui` 不需要（metacubexd 由 dashboard 在 `/ui/` 路径下托管）
+- ✓ 用户在 dashboard 改订阅 → dashboard 重写 yaml → mihomo `reload from path` → 不动 external-controller
+- ✓ MetaCubeXD 高级面板里的 "Update Config from URL" 仍可用，但**建议从主面板做**避免误操作
 
 ## Local Build
 
 ```bash
 cd apps/mihomo
-./update_mihomo.sh                  # 自动检测架构, 拉取最新版
+./update_mihomo.sh                  # 自动检测架构，拉取最新 mihomo + dashboard
 ./update_mihomo.sh --arch arm       # 强制 ARM
-./update_mihomo.sh 1.19.25          # 指定版本
+MIHOMO_VERSION=1.19.25 DASHBOARD_VERSION=v0.1.0 ./update_mihomo.sh
 ```
 
-## 上游版本管理
+打包包括：
+- `mihomo` 二进制（MetaCubeX/mihomo 上游）
+- `fnos-mihomo-dashboard` 二进制（conversun/fnos-mihomo-dashboard 上游）
+- `metacubexd/` 静态文件（MetaCubeX/metacubexd gh-pages）
+- shell 启动器 + manifest + 防火墙规则
 
-MetaCubeXD dashboard 始终拉取 `gh-pages` 分支最新快照, 跟随 mihomo 内核版本一同打包发布.
+## 故障排查
+
+### 1. 主面板打不开
+
+- fnOS 应用中心 → Mihomo → 查看日志 (`${TRIM_PKGVAR}/mihomo.log`)
+- 错误一般会写明 mihomo 或 dashboard 启动失败原因
+- 重置：fnOS 应用中心 → 重启
+
+### 2. 节点拉取失败
+
+- 检查订阅 URL 在浏览器可达
+- 主面板「日志」里看 mihomo 的 proxy-providers 错误
+- 备用：通过 MetaCubeXD 高级面板 → 「Providers」→ 手动 Refresh
+
+### 3. mihomo 启动失败
+
+- 主面板「日志」会显示 mihomo 错误
+- 即使 mihomo 挂了，dashboard 仍然可访问（运行在独立进程）
+- SSH 救援：编辑 `/vol*/apps/mihomo/var/config/config.yaml`
+
+## 上游版本
+
+- mihomo 内核：跟随 MetaCubeX/mihomo latest release
+- fnos-mihomo-dashboard：跟随 conversun/fnos-mihomo-dashboard latest release
+- MetaCubeXD：跟随 gh-pages 分支最新快照
