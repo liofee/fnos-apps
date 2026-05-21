@@ -7,8 +7,8 @@
 # the docker-compose.yaml in place for all wizard-driven values.
 
 service_postinst() {
-    mkdir -p "${TRIM_PKGVAR}/config" "${TRIM_PKGVAR}/core" "${TRIM_PKGVAR}/media" "${TRIM_PKGVAR}/downloads" 2>/dev/null || true
-    chown -R "${TRIM_UID}:${TRIM_GID}" "${TRIM_PKGVAR}/config" "${TRIM_PKGVAR}/core" "${TRIM_PKGVAR}/media" "${TRIM_PKGVAR}/downloads" 2>/dev/null || true
+    mkdir -p "${TRIM_PKGVAR}/config" "${TRIM_PKGVAR}/core" "${TRIM_PKGVAR}/media" "${TRIM_PKGVAR}/downloads" "${TRIM_PKGVAR}/torrents" "${TRIM_PKGVAR}/BT_backup" 2>/dev/null || true
+    chown -R "${TRIM_UID}:${TRIM_GID}" "${TRIM_PKGVAR}/config" "${TRIM_PKGVAR}/core" "${TRIM_PKGVAR}/media" "${TRIM_PKGVAR}/downloads" "${TRIM_PKGVAR}/torrents" "${TRIM_PKGVAR}/BT_backup" 2>/dev/null || true
 
     if [ -n "${wizard_media_dir}" ]; then
         apply_media_dir "${wizard_media_dir}"
@@ -17,6 +17,17 @@ service_postinst() {
     if [ -n "${wizard_download_dir}" ]; then
         apply_download_dir "${wizard_download_dir}"
         mkdir -p "${wizard_download_dir}" 2>/dev/null || true
+    fi
+    if [ -n "${wizard_torrent_dir}" ]; then
+        apply_torrent_dir "${wizard_torrent_dir}"
+        mkdir -p "${wizard_torrent_dir}" 2>/dev/null || true
+    fi
+    if [ -n "${wizard_bt_backup_dir}" ]; then
+        apply_bt_backup_dir "${wizard_bt_backup_dir}"
+        mkdir -p "${wizard_bt_backup_dir}" 2>/dev/null || true
+    fi
+    if [ -n "${wizard_superuser}" ]; then
+        apply_superuser "${wizard_superuser}"
     fi
     if [ -n "${wizard_password}" ]; then
         apply_superuser_password "${wizard_password}"
@@ -27,13 +38,16 @@ COMPOSE_FILE="${TRIM_APPDEST}/docker/docker-compose.yaml"
 PORT_SAVE="${TRIM_PKGVAR}/.port"
 MEDIA_DIR_SAVE="${TRIM_PKGVAR}/.media_dir"
 DOWNLOAD_DIR_SAVE="${TRIM_PKGVAR}/.download_dir"
+TORRENT_DIR_SAVE="${TRIM_PKGVAR}/.torrent_dir"
+BT_BACKUP_DIR_SAVE="${TRIM_PKGVAR}/.bt_backup_dir"
+SUPERUSER_SAVE="${TRIM_PKGVAR}/.superuser"
 SUPERUSER_PASSWORD_SAVE="${TRIM_PKGVAR}/.superuser_password"
 
 # All wizard values get sed-patched into docker-compose.yaml directly.
 apply_media_dir() {
     local dir="$1"
     [ -z "$dir" ] && return
-    sed -i 's|^      - .*:/media$|      - '"${dir}"':/media|' "$COMPOSE_FILE"
+    sed -i 's|^      - .*:/media$|      - '"${dir}"':'"${dir}"'|' "$COMPOSE_FILE"
     echo "${dir}" > "$MEDIA_DIR_SAVE"
     install_log "Patched docker-compose.yaml: media_dir=${dir}"
 }
@@ -41,9 +55,37 @@ apply_media_dir() {
 apply_download_dir() {
     local dir="$1"
     [ -z "$dir" ] && return
-    sed -i 's|^      - .*:/downloads$|      - '"${dir}"':/downloads|' "$COMPOSE_FILE"
+    sed -i 's|^      - .*:/downloads$|      - '"${dir}"':'"${dir}"'|' "$COMPOSE_FILE"
     echo "${dir}" > "$DOWNLOAD_DIR_SAVE"
     install_log "Patched docker-compose.yaml: download_dir=${dir}"
+}
+apply_torrent_dir() {
+    local dir="$1"
+    [ -z "$dir" ] && return
+    sed -i 's|^      - .*:/torrents$|      - '"${dir}"':/torrents|' "$COMPOSE_FILE"
+    echo "${dir}" > "$TORRENT_DIR_SAVE"
+    install_log "Patched docker-compose.yaml: torrent_dir=${dir}"
+}
+
+apply_bt_backup_dir() {
+    local dir="$1"
+    [ -z "$dir" ] && return
+    sed -i 's|^      - .*:/BT_backup$|      - '"${dir}"':/BT_backup|' "$COMPOSE_FILE"
+    echo "${dir}" > "$BT_BACKUP_DIR_SAVE"
+    install_log "Patched docker-compose.yaml: bt_backup_dir=${dir}"
+}
+
+apply_superuser() {
+    local pw="$1"
+    [ -z "$pw" ] && return
+    # Escape | for sed safety (passwords may contain it). Match the literal
+    # SUPERUSER line shipped in docker-compose.yaml.
+    local escaped
+    escaped=$(printf '%s' "$pw" | sed 's:[\\&|]:\\\\&:g')
+    sed -i 's|^      - SUPERUSER=.*|      - SUPERUSER='"${escaped}"'|' "$COMPOSE_FILE"
+    echo "${pw}" > "$SUPERUSER_SAVE"
+    chmod 600 "$SUPERUSER_SAVE"
+    install_log "Patched docker-compose.yaml: SUPERUSER set (length=${#pw})"
 }
 
 apply_superuser_password() {
@@ -95,6 +137,39 @@ service_postupgrade() {
         if [ -n "$v" ]; then
             install_log "Migrating DOWNLOAD_DIR from .env (legacy): $v"
             apply_download_dir "$v"
+        fi
+    fi
+
+    if [ -f "$TORRENT_DIR_SAVE" ]; then
+        apply_torrent_dir "$(cat "$TORRENT_DIR_SAVE")"
+    elif [ -f "$env_file" ]; then
+        local v
+        v="$(grep -E '^TORRENT_DIR=' "$env_file" | head -1 | cut -d= -f2-)"
+        if [ -n "$v" ]; then
+            install_log "Migrating TORRENT_DIR from .env (legacy): $v"
+            apply_torrent_dir "$v"
+        fi
+    fi
+
+    if [ -f "$BT_BACKUP_DIR_SAVE" ]; then
+        apply_bt_backup_dir "$(cat "$BT_BACKUP_DIR_SAVE")"
+    elif [ -f "$env_file" ]; then
+        local v
+        v="$(grep -E '^BT_BACKUP_DIR=' "$env_file" | head -1 | cut -d= -f2-)"
+        if [ -n "$v" ]; then
+            install_log "Migrating BT_BACKUP_DIR from .env (legacy): $v"
+            apply_bt_backup_dir "$v"
+        fi
+    fi
+
+    if [ -f "$SUPERUSER_SAVE" ]; then
+        apply_superuser "$(cat "$SUPERUSER_SAVE")"
+    elif [ -f "$env_file" ]; then
+        local v
+        v="$(grep -E '^SUPERUSER=' "$env_file" | head -1 | cut -d= -f2-)"
+        if [ -n "$v" ] && [ "$v" != "admin" ]; then
+            install_log "Migrating SUPERUSER from .env (legacy)"
+            apply_superuser "$v"
         fi
     fi
 
