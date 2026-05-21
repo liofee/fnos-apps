@@ -12,6 +12,8 @@ services:
       # interpolation against env_file). Defaults fall back to app-private dirs.
       - ${TRIM_PKGVAR:?}/media:/media
       - ${TRIM_PKGVAR:?}/downloads:/downloads
+      - ${TRIM_PKGVAR:?}/torrents:/torrents
+      - ${TRIM_PKGVAR:?}/BT_backup:/BT_backup
     environment:
       - TZ=Asia/Shanghai
       - PUID=${TRIM_UID}
