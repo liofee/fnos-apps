@@ -4,7 +4,7 @@
         {
             "title": "MoviePilot",
             "desc": "MoviePilot",
-            "icon": "images/{0}.png",
+            "icon": "images/moviepilot-{0}.png",
             "type": "url",
             "port": "3000",
             "protocol": "http",
