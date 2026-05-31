@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-30T09:54:05Z",
+  "generated_at": "2026-05-31T10:10:21Z",
   "source": {
     "name": "conversun/fnos-apps",
     "url": "https://github.com/conversun/fnos-apps"
@@ -96,9 +96,9 @@
       "file_prefix": "ani-rss",
       "display_name": "ANI-RSS",
       "description": "动漫 RSS 自动追番、订阅、下载和刮削工具，支持自动识别季数集数和重命名。默认用户名admin，密码admin。",
-      "version": "3.1.43",
-      "fpk_version": "3.1.43",
-      "release_tag": "ani-rss/v3.1.43",
+      "version": "3.1.44",
+      "fpk_version": "3.1.44",
+      "release_tag": "ani-rss/v3.1.44",
       "service_port": 7789,
       "homepage_url": "https://github.com/wushuo894/ani-rss",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/ani-rss/fnos/ICON_256.PNG",
@@ -106,7 +106,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-30T08:45:28Z",
+      "updated_at": "2026-05-31T08:58:22Z",
       "download_count": 102,
       "app_type": "docker",
       "category": "content"
@@ -339,7 +339,7 @@
         "arm"
       ],
       "updated_at": "2026-05-28T09:07:05Z",
-      "download_count": 106,
+      "download_count": 108,
       "app_type": "docker",
       "category": "network"
     },
@@ -538,9 +538,9 @@
       "file_prefix": "ente",
       "display_name": "Ente",
       "description": "端到端加密照片备份和存储服务，Google Photos 的隐私替代方案。",
-      "version": "latest-2026.05.30",
-      "fpk_version": "latest-2026.05.30",
-      "release_tag": "ente/vlatest-2026.05.30",
+      "version": "latest-2026.05.31",
+      "fpk_version": "latest-2026.05.31",
+      "release_tag": "ente/vlatest-2026.05.31",
       "service_port": 8510,
       "homepage_url": "https://ente.io",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/ente/fnos/ICON_256.PNG",
@@ -548,7 +548,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-30T08:45:21Z",
+      "updated_at": "2026-05-31T08:58:21Z",
       "download_count": 60,
       "app_type": "docker",
       "category": "media",
@@ -571,7 +571,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:55:17Z",
-      "download_count": 44,
+      "download_count": 46,
       "app_type": "native",
       "category": "system"
     },
@@ -938,9 +938,9 @@
       "file_prefix": "jackett",
       "display_name": "Jackett",
       "description": "Torrent 索引器代理，为 Sonarr/Radarr 等工具提供统一的搜索接口。",
-      "version": "0.24.1974",
-      "fpk_version": "0.24.1974",
-      "release_tag": "jackett/v0.24.1974",
+      "version": "0.24.1985",
+      "fpk_version": "0.24.1985",
+      "release_tag": "jackett/v0.24.1985",
       "service_port": 9117,
       "homepage_url": "https://github.com/Jackett/Jackett",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/jackett/fnos/ICON_256.PNG",
@@ -948,7 +948,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-30T08:45:46Z",
+      "updated_at": "2026-05-31T08:58:31Z",
       "download_count": 111,
       "app_type": "native",
       "category": "automation"
@@ -1212,9 +1212,9 @@
       "file_prefix": "localai",
       "display_name": "LocalAI",
       "description": "本地 AI 模型推理服务器，兼容 OpenAI API 接口。",
-      "version": "4.3.5",
-      "fpk_version": "4.3.5",
-      "release_tag": "localai/v4.3.5",
+      "version": "4.3.6",
+      "fpk_version": "4.3.6",
+      "release_tag": "localai/v4.3.6",
       "service_port": 8185,
       "homepage_url": "https://localai.io",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/localai/fnos/ICON_256.PNG",
@@ -1222,7 +1222,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-30T08:45:25Z",
+      "updated_at": "2026-05-31T08:58:23Z",
       "download_count": 91,
       "app_type": "docker",
       "category": "ai"
@@ -1413,7 +1413,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:55:23Z",
-      "download_count": 114,
+      "download_count": 145,
       "app_type": "native",
       "category": "network"
     },
@@ -1465,9 +1465,9 @@
       "file_prefix": "moviepilot",
       "display_name": "MoviePilot",
       "description": "影视自动化管理工具,支持自动订阅、下载、整理和通知。首次启动通过 Web UI 配置。",
-      "version": "2.13.2",
-      "fpk_version": "2.13.2",
-      "release_tag": "moviepilot/v2.13.2",
+      "version": "2.13.3",
+      "fpk_version": "2.13.3",
+      "release_tag": "moviepilot/v2.13.3",
       "service_port": 3000,
       "homepage_url": "https://github.com/jxxghp/MoviePilot",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/moviepilot/fnos/ICON_256.PNG",
@@ -1475,7 +1475,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-28T09:07:11Z",
+      "updated_at": "2026-05-31T08:58:28Z",
       "download_count": 133,
       "app_type": "docker",
       "category": "content",
@@ -1688,7 +1688,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:55:49Z",
-      "download_count": 23,
+      "download_count": 40,
       "app_type": "docker",
       "category": "system"
     },
@@ -1761,9 +1761,9 @@
       "file_prefix": "ombi",
       "display_name": "Ombi",
       "description": "媒体请求管理工具，用户可请求添加电影/电视剧到 Plex/Jellyfin。",
-      "version": "4.53.5",
-      "fpk_version": "4.53.5-r1",
-      "release_tag": "ombi/v4.53.5-r1",
+      "version": "4.53.10",
+      "fpk_version": "4.53.10",
+      "release_tag": "ombi/v4.53.10",
       "service_port": 3579,
       "homepage_url": "https://github.com/Ombi-app/Ombi",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/ombi/fnos/ICON_256.PNG",
@@ -1771,7 +1771,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-24T18:55:07Z",
+      "updated_at": "2026-05-31T08:58:25Z",
       "download_count": 25,
       "app_type": "docker",
       "category": "media"
@@ -1961,7 +1961,7 @@
         "arm"
       ],
       "updated_at": "2026-05-29T09:02:57Z",
-      "download_count": 26,
+      "download_count": 28,
       "app_type": "native",
       "category": "system"
     },
@@ -2265,9 +2265,9 @@
       "file_prefix": "sub-store",
       "display_name": "Sub-Store",
       "description": "订阅链接管理工具，支持 QX、Loon、Surge、Stash、Egern 和 Shadowrocket 等多种代理客户端的订阅聚合与转换。",
-      "version": "2.23.29",
-      "fpk_version": "2.23.29",
-      "release_tag": "sub-store/v2.23.29",
+      "version": "2.23.30",
+      "fpk_version": "2.23.30",
+      "release_tag": "sub-store/v2.23.30",
       "service_port": 3001,
       "homepage_url": "https://github.com/sub-store-org/Sub-Store",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/sub-store/fnos/ICON_256.PNG",
@@ -2275,7 +2275,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-30T08:45:30Z",
+      "updated_at": "2026-05-31T08:58:26Z",
       "download_count": 39,
       "app_type": "docker",
       "category": "system"
@@ -2318,7 +2318,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:54:59Z",
-      "download_count": 33,
+      "download_count": 34,
       "app_type": "docker",
       "category": "media"
     },
@@ -2339,7 +2339,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:54:38Z",
-      "download_count": 25,
+      "download_count": 28,
       "app_type": "docker",
       "category": "system"
     },
@@ -2381,7 +2381,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:54:40Z",
-      "download_count": 263,
+      "download_count": 264,
       "app_type": "docker",
       "category": "network"
     },
@@ -2454,9 +2454,9 @@
       "file_prefix": "uptime-kuma",
       "display_name": "Uptime Kuma",
       "description": "简洁美观的服务监控工具，支持多种监控类型和告警通知",
-      "version": "2.3.2",
-      "fpk_version": "2.3.2-r1",
-      "release_tag": "uptime-kuma/v2.3.2-r1",
+      "version": "2.4.0",
+      "fpk_version": "2.4.0",
+      "release_tag": "uptime-kuma/v2.4.0",
       "service_port": 3001,
       "homepage_url": "https://github.com/louislam/uptime-kuma",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/uptime-kuma/fnos/ICON_256.PNG",
@@ -2464,7 +2464,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-24T18:55:07Z",
+      "updated_at": "2026-05-31T08:58:26Z",
       "download_count": 46,
       "app_type": "docker",
       "category": "system"
