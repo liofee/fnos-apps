@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-02T12:00:33Z",
+  "generated_at": "2026-06-03T12:37:45Z",
   "source": {
     "name": "conversun/fnos-apps",
     "url": "https://github.com/conversun/fnos-apps"
@@ -54,9 +54,9 @@
       "file_prefix": "adguardhome",
       "display_name": "AdGuardHome",
       "description": "AdGuardHome 是一个网络范围的广告和跟踪器拦截 DNS 服务器，支持 DNS-over-HTTPS、DNS-over-TLS。",
-      "version": "0.107.76",
-      "fpk_version": "0.107.76-r1",
-      "release_tag": "adguardhome/v0.107.76-r1",
+      "version": "0.107.77",
+      "fpk_version": "0.107.77",
+      "release_tag": "adguardhome/v0.107.77",
       "service_port": 3080,
       "homepage_url": "https://adguard.com/adguard-home/overview.html",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/adguardhome/fnos/ICON_256.PNG",
@@ -64,7 +64,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-24T18:55:20Z",
+      "updated_at": "2026-06-03T09:29:55Z",
       "download_count": 67,
       "app_type": "docker",
       "category": "system"
@@ -339,7 +339,7 @@
         "arm"
       ],
       "updated_at": "2026-05-28T09:07:05Z",
-      "download_count": 113,
+      "download_count": 117,
       "app_type": "docker",
       "category": "network"
     },
@@ -538,9 +538,9 @@
       "file_prefix": "ente",
       "display_name": "Ente",
       "description": "端到端加密照片备份和存储服务，Google Photos 的隐私替代方案。",
-      "version": "latest-2026.06.02",
-      "fpk_version": "latest-2026.06.02",
-      "release_tag": "ente/vlatest-2026.06.02",
+      "version": "latest-2026.06.03",
+      "fpk_version": "latest-2026.06.03",
+      "release_tag": "ente/vlatest-2026.06.03",
       "service_port": 8510,
       "homepage_url": "https://ente.io",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/ente/fnos/ICON_256.PNG",
@@ -548,7 +548,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-06-02T09:20:47Z",
+      "updated_at": "2026-06-03T09:29:50Z",
       "download_count": 60,
       "app_type": "docker",
       "category": "media",
@@ -571,7 +571,7 @@
         "arm"
       ],
       "updated_at": "2026-06-01T09:43:46Z",
-      "download_count": 49,
+      "download_count": 54,
       "app_type": "native",
       "category": "system"
     },
@@ -938,9 +938,9 @@
       "file_prefix": "jackett",
       "display_name": "Jackett",
       "description": "Torrent 索引器代理，为 Sonarr/Radarr 等工具提供统一的搜索接口。",
-      "version": "0.24.2000",
-      "fpk_version": "0.24.2000",
-      "release_tag": "jackett/v0.24.2000",
+      "version": "0.24.2007",
+      "fpk_version": "0.24.2007",
+      "release_tag": "jackett/v0.24.2007",
       "service_port": 9117,
       "homepage_url": "https://github.com/Jackett/Jackett",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/jackett/fnos/ICON_256.PNG",
@@ -948,7 +948,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-06-02T09:20:57Z",
+      "updated_at": "2026-06-03T09:30:12Z",
       "download_count": 111,
       "app_type": "native",
       "category": "automation"
@@ -1413,7 +1413,7 @@
         "arm"
       ],
       "updated_at": "2026-06-01T09:43:46Z",
-      "download_count": 195,
+      "download_count": 234,
       "app_type": "native",
       "category": "network"
     },
@@ -1465,9 +1465,9 @@
       "file_prefix": "moviepilot",
       "display_name": "MoviePilot",
       "description": "影视自动化管理工具,支持自动订阅、下载、整理和通知。首次启动通过 Web UI 配置。",
-      "version": "2.13.3",
-      "fpk_version": "2.13.3",
-      "release_tag": "moviepilot/v2.13.3",
+      "version": "2.13.4",
+      "fpk_version": "2.13.4",
+      "release_tag": "moviepilot/v2.13.4",
       "service_port": 3000,
       "homepage_url": "https://github.com/jxxghp/MoviePilot",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/moviepilot/fnos/ICON_256.PNG",
@@ -1475,7 +1475,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-31T08:58:28Z",
+      "updated_at": "2026-06-03T09:29:56Z",
       "download_count": 133,
       "app_type": "docker",
       "category": "content",
@@ -1487,9 +1487,9 @@
       "file_prefix": "n8n",
       "display_name": "n8n",
       "description": "可视化工作流自动化工具，支持连接数百种服务和 API。",
-      "version": "2.22.6",
-      "fpk_version": "2.22.6",
-      "release_tag": "n8n/v2.22.6",
+      "version": "2.23.2",
+      "fpk_version": "2.23.2",
+      "release_tag": "n8n/v2.23.2",
       "service_port": 5678,
       "homepage_url": "https://n8n.io",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/n8n/fnos/ICON_256.PNG",
@@ -1497,7 +1497,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-06-02T09:20:50Z",
+      "updated_at": "2026-06-03T09:30:00Z",
       "download_count": 73,
       "app_type": "docker",
       "category": "system"
@@ -1593,9 +1593,9 @@
       "file_prefix": "nextcloud",
       "display_name": "Nextcloud",
       "description": "开源私有云存储平台,支持文件同步、在线文档协作和日历联系人管理。",
-      "version": "33.0.4",
-      "fpk_version": "33.0.4",
-      "release_tag": "nextcloud/v33.0.4",
+      "version": "32.0.11",
+      "fpk_version": "32.0.11",
+      "release_tag": "nextcloud/v32.0.11",
       "service_port": 8082,
       "homepage_url": "https://nextcloud.com",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/nextcloud/fnos/ICON_256.PNG",
@@ -1603,7 +1603,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-29T09:02:42Z",
+      "updated_at": "2026-06-03T09:29:53Z",
       "download_count": 54,
       "app_type": "docker",
       "category": "content"
@@ -1635,9 +1635,9 @@
       "file_prefix": "nginx-proxy-manager",
       "display_name": "Nginx Proxy Manager",
       "description": "图形化反向代理管理工具，支持 SSL 证书自动申请和续期。",
-      "version": "2.15.0",
-      "fpk_version": "2.15.0",
-      "release_tag": "nginx-proxy-manager/v2.15.0",
+      "version": "2.15.1",
+      "fpk_version": "2.15.1",
+      "release_tag": "nginx-proxy-manager/v2.15.1",
       "service_port": 81,
       "homepage_url": "https://github.com/NginxProxyManager/nginx-proxy-manager",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/nginx-proxy-manager/fnos/ICON_256.PNG",
@@ -1645,7 +1645,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-06-01T09:43:41Z",
+      "updated_at": "2026-06-03T09:29:57Z",
       "download_count": 53,
       "app_type": "docker",
       "category": "system"
@@ -1740,9 +1740,9 @@
       "file_prefix": "ollama",
       "display_name": "Ollama",
       "description": "本地大语言模型运行引擎，支持 Llama、Mistral、Gemma 等开源模型。",
-      "version": "0.30.0",
-      "fpk_version": "0.30.0",
-      "release_tag": "ollama/v0.30.0",
+      "version": "0.30.2",
+      "fpk_version": "0.30.2",
+      "release_tag": "ollama/v0.30.2",
       "service_port": 11434,
       "homepage_url": "https://github.com/ollama/ollama",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/ollama/fnos/ICON_256.PNG",
@@ -1750,7 +1750,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-06-02T09:20:51Z",
+      "updated_at": "2026-06-03T09:29:55Z",
       "download_count": 159,
       "app_type": "docker",
       "category": "ai"
@@ -2139,9 +2139,9 @@
       "file_prefix": "rocketchat",
       "display_name": "Rocket.Chat",
       "description": "开源团队协作通讯平台,支持即时消息、音视频通话和文件共享。",
-      "version": "8.4.2",
-      "fpk_version": "8.4.2-r1",
-      "release_tag": "rocketchat/v8.4.2-r1",
+      "version": "8.4.3",
+      "fpk_version": "8.4.3",
+      "release_tag": "rocketchat/v8.4.3",
       "service_port": 3003,
       "homepage_url": "https://rocket.chat",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/rocketchat/fnos/ICON_256.PNG",
@@ -2149,7 +2149,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-24T18:55:46Z",
+      "updated_at": "2026-06-03T09:29:55Z",
       "download_count": 72,
       "app_type": "docker",
       "category": "system"
@@ -2181,9 +2181,9 @@
       "file_prefix": "seerr",
       "display_name": "Seerr",
       "description": "影视媒体请求管理工具，支持 Plex/Jellyfin/Emby，Overseerr 的社区分支。",
-      "version": "3.2.0",
-      "fpk_version": "3.2.0-r1",
-      "release_tag": "seerr/v3.2.0-r1",
+      "version": "3.3.0",
+      "fpk_version": "3.3.0",
+      "release_tag": "seerr/v3.3.0",
       "service_port": 5055,
       "homepage_url": "https://github.com/seerr-team/seerr",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/seerr/fnos/ICON_256.PNG",
@@ -2191,7 +2191,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-04-27T13:50:39Z",
+      "updated_at": "2026-06-03T09:29:57Z",
       "download_count": 100,
       "app_type": "docker",
       "category": "media"
@@ -2265,9 +2265,9 @@
       "file_prefix": "sub-store",
       "display_name": "Sub-Store",
       "description": "订阅链接管理工具，支持 QX、Loon、Surge、Stash、Egern 和 Shadowrocket 等多种代理客户端的订阅聚合与转换。",
-      "version": "2.23.34",
-      "fpk_version": "2.23.34",
-      "release_tag": "sub-store/v2.23.34",
+      "version": "2.24.0",
+      "fpk_version": "2.24.0",
+      "release_tag": "sub-store/v2.24.0",
       "service_port": 3001,
       "homepage_url": "https://github.com/sub-store-org/Sub-Store",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/sub-store/fnos/ICON_256.PNG",
@@ -2275,7 +2275,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-06-01T09:43:37Z",
+      "updated_at": "2026-06-03T09:29:53Z",
       "download_count": 39,
       "app_type": "docker",
       "category": "system"
@@ -2360,7 +2360,7 @@
         "arm"
       ],
       "updated_at": "2026-05-14T12:57:56Z",
-      "download_count": 109,
+      "download_count": 110,
       "app_type": "native",
       "category": "download"
     },
@@ -2507,7 +2507,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:54:32Z",
-      "download_count": 32,
+      "download_count": 33,
       "app_type": "docker",
       "category": "system"
     },
