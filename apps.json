@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-15T13:51:19Z",
+  "generated_at": "2026-06-16T12:49:39Z",
   "source": {
     "name": "conversun/fnos-apps",
     "url": "https://github.com/conversun/fnos-apps"
@@ -23,7 +23,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:55:44Z",
-      "download_count": 91,
+      "download_count": 95,
       "app_type": "native",
       "category": "system"
     },
@@ -360,7 +360,7 @@
         "arm"
       ],
       "updated_at": "2026-06-06T08:49:46Z",
-      "download_count": 92,
+      "download_count": 93,
       "app_type": "native",
       "category": "download"
     },
@@ -454,9 +454,9 @@
       "file_prefix": "dpanel",
       "display_name": "DPanel",
       "description": "轻量级 Docker 可视化管理面板，支持容器管理和镜像操作。",
-      "version": "1.10.3",
-      "fpk_version": "1.10.3-r1",
-      "release_tag": "dpanel/v1.10.3-r1",
+      "version": "1.10.4",
+      "fpk_version": "1.10.4",
+      "release_tag": "dpanel/v1.10.4",
       "service_port": 8807,
       "homepage_url": "https://github.com/donknap/dpanel",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/dpanel/fnos/ICON_256.PNG",
@@ -464,7 +464,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-24T18:55:00Z",
+      "updated_at": "2026-06-16T09:42:41Z",
       "download_count": 186,
       "app_type": "docker",
       "category": "system"
@@ -507,7 +507,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:54:27Z",
-      "download_count": 57,
+      "download_count": 58,
       "app_type": "native",
       "category": "network"
     },
@@ -538,9 +538,9 @@
       "file_prefix": "ente",
       "display_name": "Ente",
       "description": "端到端加密照片备份和存储服务，Google Photos 的隐私替代方案。",
-      "version": "latest-2026.06.15",
-      "fpk_version": "latest-2026.06.15",
-      "release_tag": "ente/vlatest-2026.06.15",
+      "version": "latest-2026.06.16",
+      "fpk_version": "latest-2026.06.16",
+      "release_tag": "ente/vlatest-2026.06.16",
       "service_port": 8510,
       "homepage_url": "https://ente.io",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/ente/fnos/ICON_256.PNG",
@@ -548,7 +548,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-06-15T10:01:11Z",
+      "updated_at": "2026-06-16T09:42:47Z",
       "download_count": 60,
       "app_type": "docker",
       "category": "media",
@@ -634,7 +634,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:54:29Z",
-      "download_count": 4325,
+      "download_count": 4364,
       "app_type": "native",
       "category": "store"
     },
@@ -938,9 +938,9 @@
       "file_prefix": "jackett",
       "display_name": "Jackett",
       "description": "Torrent 索引器代理，为 Sonarr/Radarr 等工具提供统一的搜索接口。",
-      "version": "0.24.2067",
-      "fpk_version": "0.24.2067",
-      "release_tag": "jackett/v0.24.2067",
+      "version": "0.24.2075",
+      "fpk_version": "0.24.2075",
+      "release_tag": "jackett/v0.24.2075",
       "service_port": 9117,
       "homepage_url": "https://github.com/Jackett/Jackett",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/jackett/fnos/ICON_256.PNG",
@@ -948,7 +948,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-06-15T10:01:27Z",
+      "updated_at": "2026-06-16T09:42:52Z",
       "download_count": 111,
       "app_type": "native",
       "category": "automation"
@@ -1265,7 +1265,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:55:45Z",
-      "download_count": 28,
+      "download_count": 30,
       "app_type": "native",
       "category": "system"
     },
@@ -1275,9 +1275,9 @@
       "file_prefix": "mattermost",
       "display_name": "Mattermost",
       "description": "企业级即时通讯平台，Slack 的开源替代方案。",
-      "version": "11.7.3",
-      "fpk_version": "11.7.3",
-      "release_tag": "mattermost/v11.7.3",
+      "version": "11.8.0",
+      "fpk_version": "11.8.0",
+      "release_tag": "mattermost/v11.8.0",
       "service_port": 8065,
       "homepage_url": "https://mattermost.com",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/mattermost/fnos/ICON_256.PNG",
@@ -1285,7 +1285,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-06-12T09:18:22Z",
+      "updated_at": "2026-06-16T09:42:50Z",
       "download_count": 10,
       "app_type": "docker",
       "category": "system",
@@ -1413,7 +1413,7 @@
         "arm"
       ],
       "updated_at": "2026-06-06T08:49:44Z",
-      "download_count": 533,
+      "download_count": 545,
       "app_type": "native",
       "category": "network"
     },
@@ -1940,7 +1940,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:55:34Z",
-      "download_count": 758,
+      "download_count": 764,
       "app_type": "native",
       "category": "media"
     },
@@ -2013,9 +2013,9 @@
       "file_prefix": "qBittorrent",
       "display_name": "qBittorrent",
       "description": "qBittorrent是一个轻量级BitTorrent客户端，简单易用，功能强大。默认用户名admin，密码adminadmin。",
-      "version": "5.2.1",
-      "fpk_version": "5.2.1",
-      "release_tag": "qbittorrent/v5.2.1",
+      "version": "5.2.2",
+      "fpk_version": "5.2.2",
+      "release_tag": "qbittorrent/v5.2.2",
       "service_port": 8085,
       "homepage_url": "https://github.com/userdocs/qbittorrent-nox-static",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/qbittorrent/fnos/ICON_256.PNG",
@@ -2023,7 +2023,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-05-26T09:03:09Z",
+      "updated_at": "2026-06-16T09:42:49Z",
       "download_count": 475,
       "app_type": "native",
       "category": "download"
@@ -2045,7 +2045,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:55:04Z",
-      "download_count": 32,
+      "download_count": 35,
       "app_type": "docker",
       "category": "system"
     },
@@ -2139,9 +2139,9 @@
       "file_prefix": "rocketchat",
       "display_name": "Rocket.Chat",
       "description": "开源团队协作通讯平台,支持即时消息、音视频通话和文件共享。",
-      "version": "8.5.0",
-      "fpk_version": "8.5.0",
-      "release_tag": "rocketchat/v8.5.0",
+      "version": "8.5.1",
+      "fpk_version": "8.5.1",
+      "release_tag": "rocketchat/v8.5.1",
       "service_port": 3003,
       "homepage_url": "https://rocket.chat",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/rocketchat/fnos/ICON_256.PNG",
@@ -2149,7 +2149,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-06-11T09:22:54Z",
+      "updated_at": "2026-06-16T09:42:48Z",
       "download_count": 76,
       "app_type": "docker",
       "category": "system"
@@ -2213,7 +2213,7 @@
         "arm"
       ],
       "updated_at": "2026-06-07T08:59:30Z",
-      "download_count": 71,
+      "download_count": 75,
       "app_type": "native",
       "category": "network"
     },
@@ -2265,9 +2265,9 @@
       "file_prefix": "sub-store",
       "display_name": "Sub-Store",
       "description": "订阅链接管理工具，支持 QX、Loon、Surge、Stash、Egern 和 Shadowrocket 等多种代理客户端的订阅聚合与转换。",
-      "version": "2.24.19",
-      "fpk_version": "2.24.19",
-      "release_tag": "sub-store/v2.24.19",
+      "version": "2.24.22",
+      "fpk_version": "2.24.22",
+      "release_tag": "sub-store/v2.24.22",
       "service_port": 3001,
       "homepage_url": "https://github.com/sub-store-org/Sub-Store",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/sub-store/fnos/ICON_256.PNG",
@@ -2275,7 +2275,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-06-12T09:18:23Z",
+      "updated_at": "2026-06-16T09:42:54Z",
       "download_count": 39,
       "app_type": "docker",
       "category": "system"
@@ -2318,7 +2318,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:54:59Z",
-      "download_count": 38,
+      "download_count": 44,
       "app_type": "docker",
       "category": "media"
     },
@@ -2549,7 +2549,7 @@
         "arm"
       ],
       "updated_at": "2026-05-24T18:54:24Z",
-      "download_count": 21,
+      "download_count": 24,
       "app_type": "docker",
       "category": "content"
     },
