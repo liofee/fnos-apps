@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-30T10:17:33Z",
+  "generated_at": "2026-07-31T10:32:24Z",
   "source": {
     "name": "conversun/fnos-apps",
     "url": "https://github.com/conversun/fnos-apps"
@@ -65,7 +65,7 @@
         "arm"
       ],
       "updated_at": "2026-07-25T17:23:16Z",
-      "download_count": 79,
+      "download_count": 80,
       "app_type": "docker",
       "category": "system"
     },
@@ -244,9 +244,9 @@
       "file_prefix": "certimate",
       "display_name": "Certimate",
       "description": "SSL/TLS证书自动化管理工具，支持ACME协议自动申请和续签证书。",
-      "version": "0.4.28",
-      "fpk_version": "0.4.28-r1",
-      "release_tag": "certimate/v0.4.28-r1",
+      "version": "0.4.29",
+      "fpk_version": "0.4.29",
+      "release_tag": "certimate/v0.4.29",
       "service_port": 8090,
       "homepage_url": "https://github.com/certimate-go/certimate",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/certimate/fnos/ICON_256.PNG",
@@ -254,7 +254,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-25T17:23:33Z",
+      "updated_at": "2026-07-31T08:59:13Z",
       "download_count": 43,
       "app_type": "native",
       "category": "system"
@@ -286,9 +286,9 @@
       "file_prefix": "chromium",
       "display_name": "Chromium",
       "description": "Chromium 浏览器的 Docker 容器版本，通过网页即可远程访问，内置中文字体支持。",
-      "version": "26.07.2",
-      "fpk_version": "26.07.2-r1",
-      "release_tag": "chromium/v26.07.2-r1",
+      "version": "26.07.3",
+      "fpk_version": "26.07.3",
+      "release_tag": "chromium/v26.07.3",
       "service_port": 5802,
       "homepage_url": "https://github.com/jlesage/docker-chromium",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/chromium/fnos/ICON_256.PNG",
@@ -296,7 +296,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-25T17:23:35Z",
+      "updated_at": "2026-07-31T08:59:07Z",
       "download_count": 826,
       "app_type": "docker",
       "category": "browser"
@@ -433,9 +433,9 @@
       "file_prefix": "ddns-go",
       "display_name": "DDNS-GO",
       "description": "DDNS-GO 是一个简单好用的 DDNS 工具，支持阿里云、腾讯云、Cloudflare 等多个 DNS 服务商。",
-      "version": "6.17.3",
-      "fpk_version": "6.17.3",
-      "release_tag": "ddns-go/v6.17.3",
+      "version": "6.17.4",
+      "fpk_version": "6.17.4",
+      "release_tag": "ddns-go/v6.17.4",
       "service_port": 9876,
       "homepage_url": "https://github.com/jeessy2/ddns-go",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/ddns-go/fnos/ICON_256.PNG",
@@ -443,7 +443,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-30T08:52:05Z",
+      "updated_at": "2026-07-31T08:59:15Z",
       "download_count": 68,
       "app_type": "native",
       "category": "system"
@@ -538,9 +538,9 @@
       "file_prefix": "ente",
       "display_name": "Ente",
       "description": "端到端加密照片备份和存储服务，Google Photos 的隐私替代方案。",
-      "version": "latest-2026.07.30",
-      "fpk_version": "latest-2026.07.30",
-      "release_tag": "ente/vlatest-2026.07.30",
+      "version": "latest-2026.07.31",
+      "fpk_version": "latest-2026.07.31",
+      "release_tag": "ente/vlatest-2026.07.31",
       "service_port": 8510,
       "homepage_url": "https://ente.io",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/ente/fnos/ICON_256.PNG",
@@ -548,7 +548,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-30T08:52:07Z",
+      "updated_at": "2026-07-31T08:59:02Z",
       "download_count": 60,
       "app_type": "docker",
       "category": "media",
@@ -896,9 +896,9 @@
       "file_prefix": "immich",
       "display_name": "Immich",
       "description": "自托管照片和视频备份方案,支持人脸识别和智能搜索。",
-      "version": "release-2026.07.30",
-      "fpk_version": "release-2026.07.30",
-      "release_tag": "immich/vrelease-2026.07.30",
+      "version": "release-2026.07.31",
+      "fpk_version": "release-2026.07.31",
+      "release_tag": "immich/vrelease-2026.07.31",
       "service_port": 2283,
       "homepage_url": "https://github.com/immich-app/immich",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/immich/fnos/ICON_256.PNG",
@@ -906,7 +906,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-30T08:52:08Z",
+      "updated_at": "2026-07-31T08:59:10Z",
       "download_count": 477,
       "app_type": "docker",
       "category": "media"
@@ -938,9 +938,9 @@
       "file_prefix": "jackett",
       "display_name": "Jackett",
       "description": "Torrent 索引器代理，为 Sonarr/Radarr 等工具提供统一的搜索接口。",
-      "version": "0.24.2297",
-      "fpk_version": "0.24.2297",
-      "release_tag": "jackett/v0.24.2297",
+      "version": "0.24.2304",
+      "fpk_version": "0.24.2304",
+      "release_tag": "jackett/v0.24.2304",
       "service_port": 9117,
       "homepage_url": "https://github.com/Jackett/Jackett",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/jackett/fnos/ICON_256.PNG",
@@ -948,7 +948,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-30T08:52:23Z",
+      "updated_at": "2026-07-31T08:59:28Z",
       "download_count": 111,
       "app_type": "native",
       "category": "automation"
@@ -1424,8 +1424,8 @@
       "display_name": "Miniflux",
       "description": "极简 RSS 阅读器，Go 编写，性能优异",
       "version": "2.3.3",
-      "fpk_version": "2.3.3-r1",
-      "release_tag": "miniflux/v2.3.3-r1",
+      "fpk_version": "2.3.3-r2",
+      "release_tag": "miniflux/v2.3.3-r2",
       "service_port": 8190,
       "homepage_url": "https://miniflux.app",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/miniflux/fnos/ICON_256.PNG",
@@ -1433,7 +1433,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-25T17:24:31Z",
+      "updated_at": "2026-07-31T08:03:56Z",
       "download_count": 51,
       "app_type": "docker",
       "category": "content"
@@ -1487,9 +1487,9 @@
       "file_prefix": "n8n",
       "display_name": "n8n",
       "description": "可视化工作流自动化工具，支持连接数百种服务和 API。",
-      "version": "2.32.6",
-      "fpk_version": "2.32.6",
-      "release_tag": "n8n/v2.32.6",
+      "version": "2.32.7",
+      "fpk_version": "2.32.7",
+      "release_tag": "n8n/v2.32.7",
       "service_port": 5678,
       "homepage_url": "https://n8n.io",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/n8n/fnos/ICON_256.PNG",
@@ -1497,7 +1497,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-29T08:55:26Z",
+      "updated_at": "2026-07-31T08:59:13Z",
       "download_count": 73,
       "app_type": "docker",
       "category": "system"
@@ -1530,8 +1530,8 @@
       "display_name": "Navidrome",
       "description": "开源的个人音乐流媒体服务器,兼容 Subsonic/Airsonic API,支持多用户和移动端应用。",
       "version": "0.63.2",
-      "fpk_version": "0.63.2-r1",
-      "release_tag": "navidrome/v0.63.2-r1",
+      "fpk_version": "0.63.2-r2",
+      "release_tag": "navidrome/v0.63.2-r2",
       "service_port": 4533,
       "homepage_url": "https://www.navidrome.org",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/navidrome/fnos/ICON_256.PNG",
@@ -1539,7 +1539,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-25T17:24:34Z",
+      "updated_at": "2026-07-31T08:04:08Z",
       "download_count": 170,
       "app_type": "native",
       "category": "media"
@@ -1656,9 +1656,9 @@
       "file_prefix": "nginx-ui",
       "display_name": "Nginx UI",
       "description": "Nginx可视化管理面板，内置Nginx引擎，支持在线编辑配置、一键Reload、SSL证书管理。",
-      "version": "2.5.2",
-      "fpk_version": "2.5.2",
-      "release_tag": "nginx-ui/v2.5.2",
+      "version": "2.5.6",
+      "fpk_version": "2.5.6",
+      "release_tag": "nginx-ui/v2.5.6",
       "service_port": 8889,
       "homepage_url": "https://github.com/0xJacky/nginx-ui",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/nginx-ui/fnos/ICON_256.PNG",
@@ -1666,7 +1666,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-30T08:52:20Z",
+      "updated_at": "2026-07-31T08:59:27Z",
       "download_count": 173,
       "app_type": "native",
       "category": "system"
@@ -1677,9 +1677,9 @@
       "file_prefix": "node-red",
       "display_name": "Node-RED",
       "description": "可视化流程编排工具，支持 IoT 和智能家居自动化。",
-      "version": "5.0.1",
-      "fpk_version": "5.0.1-r1",
-      "release_tag": "node-red/v5.0.1-r1",
+      "version": "5.0.4",
+      "fpk_version": "5.0.4",
+      "release_tag": "node-red/v5.0.4",
       "service_port": 1880,
       "homepage_url": "https://github.com/node-red/node-red",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/node-red/fnos/ICON_256.PNG",
@@ -1687,7 +1687,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-25T17:24:58Z",
+      "updated_at": "2026-07-31T08:59:04Z",
       "download_count": 59,
       "app_type": "docker",
       "category": "system"
@@ -1814,7 +1814,7 @@
         "arm"
       ],
       "updated_at": "2026-07-25T17:24:48Z",
-      "download_count": 283,
+      "download_count": 292,
       "app_type": "native",
       "category": "content"
     },
@@ -1950,9 +1950,9 @@
       "file_prefix": "prometheus",
       "display_name": "Prometheus",
       "description": "时序数据库和监控系统，支持灵活的查询语言和告警规则。",
-      "version": "3.13.1",
-      "fpk_version": "3.13.1-r1",
-      "release_tag": "prometheus/v3.13.1-r1",
+      "version": "3.13.2",
+      "fpk_version": "3.13.2",
+      "release_tag": "prometheus/v3.13.2",
       "service_port": 9090,
       "homepage_url": "https://prometheus.io",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/prometheus/fnos/ICON_256.PNG",
@@ -1960,7 +1960,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-25T17:24:40Z",
+      "updated_at": "2026-07-31T08:59:25Z",
       "download_count": 60,
       "app_type": "native",
       "category": "system"
@@ -1982,7 +1982,7 @@
         "arm"
       ],
       "updated_at": "2026-07-25T17:24:27Z",
-      "download_count": 627,
+      "download_count": 672,
       "app_type": "native",
       "category": "automation"
     },
@@ -2097,9 +2097,9 @@
       "file_prefix": "reactive-resume",
       "display_name": "Reactive Resume",
       "description": "在线简历制作工具，支持多种模板和实时预览。",
-      "version": "v5.2.4",
-      "fpk_version": "v5.2.4",
-      "release_tag": "reactive-resume/vv5.2.4",
+      "version": "v5.2.5",
+      "fpk_version": "v5.2.5",
+      "release_tag": "reactive-resume/vv5.2.5",
       "service_port": 3200,
       "homepage_url": "https://github.com/amruthpillai/reactive-resume",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/reactive-resume/fnos/ICON_256.PNG",
@@ -2107,7 +2107,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-28T08:53:11Z",
+      "updated_at": "2026-07-31T08:59:09Z",
       "download_count": 52,
       "app_type": "docker",
       "category": "content"
@@ -2181,9 +2181,9 @@
       "file_prefix": "seerr",
       "display_name": "Seerr",
       "description": "影视媒体请求管理工具，支持 Plex/Jellyfin/Emby，Overseerr 的社区分支。",
-      "version": "3.4.0",
-      "fpk_version": "3.4.0",
-      "release_tag": "seerr/v3.4.0",
+      "version": "3.4.1",
+      "fpk_version": "3.4.1",
+      "release_tag": "seerr/v3.4.1",
       "service_port": 5055,
       "homepage_url": "https://github.com/seerr-team/seerr",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/seerr/fnos/ICON_256.PNG",
@@ -2191,7 +2191,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-28T08:53:02Z",
+      "updated_at": "2026-07-31T08:59:13Z",
       "download_count": 122,
       "app_type": "docker",
       "category": "media"
@@ -2433,9 +2433,9 @@
       "file_prefix": "transmission",
       "display_name": "Transmission",
       "description": "Transmission 是一个轻量级的 BitTorrent 客户端，以简洁高效著称，支持 Web 远程管理。",
-      "version": "latest-2026.07.30",
-      "fpk_version": "latest-2026.07.30",
-      "release_tag": "transmission/vlatest-2026.07.30",
+      "version": "latest-2026.07.31",
+      "fpk_version": "latest-2026.07.31",
+      "release_tag": "transmission/vlatest-2026.07.31",
       "service_port": 9091,
       "homepage_url": "https://transmissionbt.com",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/transmission/fnos/ICON_256.PNG",
@@ -2443,7 +2443,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-07-30T08:52:13Z",
+      "updated_at": "2026-07-31T08:59:13Z",
       "download_count": 64,
       "app_type": "docker",
       "category": "download"
