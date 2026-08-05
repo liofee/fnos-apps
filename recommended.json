@@ -6,8 +6,8 @@
       "description": "BT 反吸血工具，自动封禁异常上传的吸血客户端",
       "source_url": "https://github.com/liumingye/fnos_fpk/releases/tag/v1.0.0",
       "github_repo": "PBH-BTN/PeerBanHelper",
-      "latest_version": "9.4.2",
-      "updated_at": "2026-07-22T14:00:01Z"
+      "latest_version": "9.4.3",
+      "updated_at": "2026-08-04T12:38:17Z"
     },
     {
       "name": "bilisync",
@@ -132,8 +132,8 @@
       "description": "轻量级 BT 下载客户端，ARM64 架构专用原生包",
       "source_url": "https://github.com/sushazhi/fnos-transmission/releases",
       "github_repo": "sushazhi/fnos-transmission",
-      "latest_version": "4.1.3.1",
-      "updated_at": "2026-07-02T12:15:36Z"
+      "latest_version": "4.1.3.2",
+      "updated_at": "2026-08-04T13:12:10Z"
     },
     {
       "name": "xunlei-arm",
@@ -159,8 +159,8 @@
       "description": "社区维护的 fnOS 应用仓库，包含驱动、系统工具、桌面环境等 20+ 款应用",
       "source_url": "https://github.com/RROrg/fn-apps/releases",
       "github_repo": "RROrg/fn-apps",
-      "latest_version": "2026.07.24-1229",
-      "updated_at": "2026-07-24T04:32:57Z"
+      "latest_version": "2026.08.05-0227",
+      "updated_at": "2026-08-04T18:30:34Z"
     }
   ]
 }
