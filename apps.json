@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-30T13:27:58Z",
+  "generated_at": "2026-08-31T15:44:21Z",
   "source": {
     "name": "conversun/fnos-apps",
     "url": "https://github.com/conversun/fnos-apps"
@@ -244,9 +244,9 @@
       "file_prefix": "certimate",
       "display_name": "Certimate",
       "description": "SSL/TLS证书自动化管理工具，支持ACME协议自动申请和续签证书。",
-      "version": "0.4.31",
-      "fpk_version": "0.4.31-r1",
-      "release_tag": "certimate/v0.4.31-r1",
+      "version": "0.4.32",
+      "fpk_version": "0.4.32",
+      "release_tag": "certimate/v0.4.32",
       "service_port": 8090,
       "homepage_url": "https://github.com/certimate-go/certimate",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/certimate/fnos/ICON_256.PNG",
@@ -254,7 +254,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-08-17T08:45:44Z",
+      "updated_at": "2026-08-31T08:02:47Z",
       "download_count": 43,
       "app_type": "native",
       "category": "system"
@@ -538,9 +538,9 @@
       "file_prefix": "ente",
       "display_name": "Ente",
       "description": "端到端加密照片备份和存储服务，Google Photos 的隐私替代方案。",
-      "version": "latest-2026.08.30",
-      "fpk_version": "latest-2026.08.30",
-      "release_tag": "ente/vlatest-2026.08.30",
+      "version": "latest-2026.08.31",
+      "fpk_version": "latest-2026.08.31",
+      "release_tag": "ente/vlatest-2026.08.31",
       "service_port": 8510,
       "homepage_url": "https://ente.io",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/ente/fnos/ICON_256.PNG",
@@ -548,7 +548,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-08-30T08:02:09Z",
+      "updated_at": "2026-08-31T08:02:38Z",
       "download_count": 60,
       "app_type": "docker",
       "category": "media",
@@ -623,9 +623,9 @@
       "file_prefix": "fnos-apps-store",
       "display_name": "fnOS Apps",
       "description": "fnOS第三方应用中心，支持一键安装、更新和卸载来自conversun/fnos-apps的所有应用。",
-      "version": "1.9.3",
-      "fpk_version": "1.9.3",
-      "release_tag": "fnos-apps-store/v1.9.3",
+      "version": "1.9.4",
+      "fpk_version": "1.9.4",
+      "release_tag": "fnos-apps-store/v1.9.4",
       "service_port": 8011,
       "homepage_url": "https://github.com/conversun/fnos-store",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/fnos-apps-store/fnos/ICON_256.PNG",
@@ -633,7 +633,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-08-30T03:23:03Z",
+      "updated_at": "2026-08-31T15:33:16Z",
       "download_count": 6291,
       "app_type": "native",
       "category": "store"
@@ -655,7 +655,7 @@
         "arm"
       ],
       "updated_at": "2026-08-21T08:11:21Z",
-      "download_count": 47,
+      "download_count": 51,
       "app_type": "native",
       "category": "system"
     },
@@ -823,7 +823,7 @@
         "arm"
       ],
       "updated_at": "2026-08-17T08:45:57Z",
-      "download_count": 50,
+      "download_count": 52,
       "app_type": "native",
       "category": "network"
     },
@@ -896,9 +896,9 @@
       "file_prefix": "immich",
       "display_name": "Immich",
       "description": "自托管照片和视频备份方案,支持人脸识别和智能搜索。",
-      "version": "release-2026.08.30",
-      "fpk_version": "release-2026.08.30",
-      "release_tag": "immich/vrelease-2026.08.30",
+      "version": "release-2026.08.31",
+      "fpk_version": "release-2026.08.31",
+      "release_tag": "immich/vrelease-2026.08.31",
       "service_port": 2283,
       "homepage_url": "https://github.com/immich-app/immich",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/immich/fnos/ICON_256.PNG",
@@ -906,7 +906,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-08-30T08:02:10Z",
+      "updated_at": "2026-08-31T08:02:41Z",
       "download_count": 477,
       "app_type": "docker",
       "category": "media"
@@ -938,9 +938,9 @@
       "file_prefix": "jackett",
       "display_name": "Jackett",
       "description": "Torrent 索引器代理，为 Sonarr/Radarr 等工具提供统一的搜索接口。",
-      "version": "0.24.2492",
-      "fpk_version": "0.24.2492",
-      "release_tag": "jackett/v0.24.2492",
+      "version": "0.24.2503",
+      "fpk_version": "0.24.2503",
+      "release_tag": "jackett/v0.24.2503",
       "service_port": 9117,
       "homepage_url": "https://github.com/Jackett/Jackett",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/jackett/fnos/ICON_256.PNG",
@@ -948,7 +948,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-08-30T08:02:23Z",
+      "updated_at": "2026-08-31T08:02:46Z",
       "download_count": 111,
       "app_type": "native",
       "category": "automation"
@@ -1487,9 +1487,9 @@
       "file_prefix": "n8n",
       "display_name": "n8n",
       "description": "可视化工作流自动化工具，支持连接数百种服务和 API。",
-      "version": "2.36.8",
-      "fpk_version": "2.36.8",
-      "release_tag": "n8n/v2.36.8",
+      "version": "2.36.9",
+      "fpk_version": "2.36.9",
+      "release_tag": "n8n/v2.36.9",
       "service_port": 5678,
       "homepage_url": "https://n8n.io",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/n8n/fnos/ICON_256.PNG",
@@ -1497,7 +1497,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-08-28T11:43:28Z",
+      "updated_at": "2026-08-31T08:02:40Z",
       "download_count": 73,
       "app_type": "docker",
       "category": "system"
@@ -1625,7 +1625,7 @@
         "arm"
       ],
       "updated_at": "2026-08-17T06:23:55Z",
-      "download_count": 96,
+      "download_count": 97,
       "app_type": "native",
       "category": "system"
     },
@@ -1782,9 +1782,9 @@
       "file_prefix": "open-webui",
       "display_name": "Open WebUI",
       "description": "AI 对话界面，支持连接 Ollama、OpenAI 等多种大语言模型。",
-      "version": "0.11.1",
-      "fpk_version": "0.11.1",
-      "release_tag": "open-webui/v0.11.1",
+      "version": "0.11.2",
+      "fpk_version": "0.11.2",
+      "release_tag": "open-webui/v0.11.2",
       "service_port": 8080,
       "homepage_url": "https://github.com/open-webui/open-webui",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/open-webui/fnos/ICON_256.PNG",
@@ -1792,7 +1792,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-08-26T08:12:41Z",
+      "updated_at": "2026-08-31T08:02:44Z",
       "download_count": 278,
       "app_type": "docker",
       "category": "ai"
@@ -1824,9 +1824,9 @@
       "file_prefix": "paperless-ngx",
       "display_name": "Paperless-ngx",
       "description": "文档 OCR 扫描与归档管理系统，将纸质文件数字化并智能分类",
-      "version": "3.1.0",
-      "fpk_version": "3.1.0",
-      "release_tag": "paperless-ngx/v3.1.0",
+      "version": "3.1.1",
+      "fpk_version": "3.1.1",
+      "release_tag": "paperless-ngx/v3.1.1",
       "service_port": 8000,
       "homepage_url": "https://docs.paperless-ngx.com",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/paperless-ngx/fnos/ICON_256.PNG",
@@ -1834,7 +1834,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-08-27T11:16:58Z",
+      "updated_at": "2026-08-31T08:02:37Z",
       "download_count": 109,
       "app_type": "docker",
       "category": "content"
@@ -1888,8 +1888,8 @@
       "display_name": "PicoClaw",
       "description": "超轻量 AI 智能体框架，Go 编写，10MB 内存占用，支持多模型多通道智能自动化",
       "version": "0.3.1",
-      "fpk_version": "0.3.1-r4",
-      "release_tag": "picoclaw/v0.3.1-r4",
+      "fpk_version": "0.3.1-r5",
+      "release_tag": "picoclaw/v0.3.1-r5",
       "service_port": 18790,
       "homepage_url": "https://github.com/sipeed/picoclaw",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/picoclaw/fnos/ICON_256.PNG",
@@ -1897,7 +1897,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-08-17T08:46:25Z",
+      "updated_at": "2026-08-31T15:21:52Z",
       "download_count": 275,
       "app_type": "native",
       "category": "ai"
@@ -2265,9 +2265,9 @@
       "file_prefix": "sub-store",
       "display_name": "Sub-Store",
       "description": "订阅链接管理工具，支持 QX、Loon、Surge、Stash、Egern 和 Shadowrocket 等多种代理客户端的订阅聚合与转换。",
-      "version": "2.36.52",
-      "fpk_version": "2.36.52",
-      "release_tag": "sub-store/v2.36.52",
+      "version": "2.36.55",
+      "fpk_version": "2.36.55",
+      "release_tag": "sub-store/v2.36.55",
       "service_port": 3001,
       "homepage_url": "https://github.com/sub-store-org/Sub-Store",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/sub-store/fnos/ICON_256.PNG",
@@ -2275,7 +2275,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-08-30T08:02:13Z",
+      "updated_at": "2026-08-31T08:02:47Z",
       "download_count": 86,
       "app_type": "docker",
       "category": "system"
@@ -2433,9 +2433,9 @@
       "file_prefix": "transmission",
       "display_name": "Transmission",
       "description": "Transmission 是一个轻量级的 BitTorrent 客户端，以简洁高效著称，支持 Web 远程管理。",
-      "version": "latest-2026.08.30",
-      "fpk_version": "latest-2026.08.30",
-      "release_tag": "transmission/vlatest-2026.08.30",
+      "version": "latest-2026.08.31",
+      "fpk_version": "latest-2026.08.31",
+      "release_tag": "transmission/vlatest-2026.08.31",
       "service_port": 9091,
       "homepage_url": "https://transmissionbt.com",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/transmission/fnos/ICON_256.PNG",
@@ -2443,7 +2443,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-08-30T08:02:15Z",
+      "updated_at": "2026-08-31T08:02:43Z",
       "download_count": 64,
       "app_type": "docker",
       "category": "download"
@@ -2528,7 +2528,7 @@
         "arm"
       ],
       "updated_at": "2026-08-17T10:46:49Z",
-      "download_count": 216,
+      "download_count": 225,
       "app_type": "docker",
       "category": "network"
     },
