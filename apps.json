@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-22T13:05:16Z",
+  "generated_at": "2026-09-23T13:12:06Z",
   "source": {
     "name": "conversun/fnos-apps",
     "url": "https://github.com/conversun/fnos-apps"
@@ -286,9 +286,9 @@
       "file_prefix": "chromium",
       "display_name": "Chromium",
       "description": "Chromium 浏览器的 Docker 容器版本，通过网页即可远程访问，内置中文字体支持。",
-      "version": "26.09.1",
-      "fpk_version": "26.09.1",
-      "release_tag": "chromium/v26.09.1",
+      "version": "26.09.2",
+      "fpk_version": "26.09.2",
+      "release_tag": "chromium/v26.09.2",
       "service_port": 5802,
       "homepage_url": "https://github.com/jlesage/docker-chromium",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/chromium/fnos/ICON_256.PNG",
@@ -296,7 +296,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-09-15T08:02:36Z",
+      "updated_at": "2026-09-23T08:02:38Z",
       "download_count": 826,
       "app_type": "docker",
       "category": "browser"
@@ -360,7 +360,7 @@
         "arm"
       ],
       "updated_at": "2026-08-17T07:35:37Z",
-      "download_count": 178,
+      "download_count": 179,
       "app_type": "native",
       "category": "download"
     },
@@ -528,7 +528,7 @@
         "arm"
       ],
       "updated_at": "2026-09-09T08:03:54Z",
-      "download_count": 985,
+      "download_count": 991,
       "app_type": "native",
       "category": "media"
     },
@@ -538,9 +538,9 @@
       "file_prefix": "ente",
       "display_name": "Ente",
       "description": "端到端加密照片备份和存储服务，Google Photos 的隐私替代方案。",
-      "version": "latest-2026.09.22",
-      "fpk_version": "latest-2026.09.22",
-      "release_tag": "ente/vlatest-2026.09.22",
+      "version": "latest-2026.09.23",
+      "fpk_version": "latest-2026.09.23",
+      "release_tag": "ente/vlatest-2026.09.23",
       "service_port": 8510,
       "homepage_url": "https://ente.io",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/ente/fnos/ICON_256.PNG",
@@ -548,7 +548,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-09-22T08:02:40Z",
+      "updated_at": "2026-09-23T08:02:39Z",
       "download_count": 60,
       "app_type": "docker",
       "category": "media",
@@ -602,9 +602,9 @@
       "file_prefix": "firefox",
       "display_name": "Firefox",
       "description": "Firefox 浏览器的 Docker 容器版本，通过网页即可远程访问，内置中文字体支持。",
-      "version": "26.08.3",
-      "fpk_version": "26.08.3",
-      "release_tag": "firefox/v26.08.3",
+      "version": "26.09.1",
+      "fpk_version": "26.09.1",
+      "release_tag": "firefox/v26.09.1",
       "service_port": 5801,
       "homepage_url": "https://github.com/jlesage/docker-firefox",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/firefox/fnos/ICON_256.PNG",
@@ -612,7 +612,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-08-27T11:16:53Z",
+      "updated_at": "2026-09-23T08:02:34Z",
       "download_count": 989,
       "app_type": "docker",
       "category": "browser"
@@ -655,7 +655,7 @@
         "arm"
       ],
       "updated_at": "2026-09-18T08:02:45Z",
-      "download_count": 90,
+      "download_count": 91,
       "app_type": "native",
       "category": "system"
     },
@@ -697,7 +697,7 @@
         "arm"
       ],
       "updated_at": "2026-09-13T08:02:22Z",
-      "download_count": 107,
+      "download_count": 108,
       "app_type": "docker",
       "category": "media"
     },
@@ -896,9 +896,9 @@
       "file_prefix": "immich",
       "display_name": "Immich",
       "description": "自托管照片和视频备份方案,支持人脸识别和智能搜索。",
-      "version": "release-2026.09.22",
-      "fpk_version": "release-2026.09.22",
-      "release_tag": "immich/vrelease-2026.09.22",
+      "version": "release-2026.09.23",
+      "fpk_version": "release-2026.09.23",
+      "release_tag": "immich/vrelease-2026.09.23",
       "service_port": 2283,
       "homepage_url": "https://github.com/immich-app/immich",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/immich/fnos/ICON_256.PNG",
@@ -906,7 +906,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-09-22T08:02:51Z",
+      "updated_at": "2026-09-23T08:02:36Z",
       "download_count": 477,
       "app_type": "docker",
       "category": "media"
@@ -938,9 +938,9 @@
       "file_prefix": "jackett",
       "display_name": "Jackett",
       "description": "Torrent 索引器代理，为 Sonarr/Radarr 等工具提供统一的搜索接口。",
-      "version": "0.24.2644",
-      "fpk_version": "0.24.2644",
-      "release_tag": "jackett/v0.24.2644",
+      "version": "0.24.2651",
+      "fpk_version": "0.24.2651",
+      "release_tag": "jackett/v0.24.2651",
       "service_port": 9117,
       "homepage_url": "https://github.com/Jackett/Jackett",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/jackett/fnos/ICON_256.PNG",
@@ -948,7 +948,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-09-22T08:02:53Z",
+      "updated_at": "2026-09-23T08:02:46Z",
       "download_count": 168,
       "app_type": "native",
       "category": "automation"
@@ -1054,7 +1054,7 @@
         "arm"
       ],
       "updated_at": "2026-08-17T09:51:26Z",
-      "download_count": 146,
+      "download_count": 150,
       "app_type": "docker",
       "category": "content"
     },
@@ -1181,7 +1181,7 @@
         "arm"
       ],
       "updated_at": "2026-08-17T08:46:21Z",
-      "download_count": 207,
+      "download_count": 211,
       "app_type": "native",
       "category": "automation"
     },
@@ -1625,7 +1625,7 @@
         "arm"
       ],
       "updated_at": "2026-09-16T08:02:44Z",
-      "download_count": 128,
+      "download_count": 131,
       "app_type": "native",
       "category": "system"
     },
@@ -1740,9 +1740,9 @@
       "file_prefix": "ollama",
       "display_name": "Ollama",
       "description": "本地大语言模型运行引擎，支持 Llama、Mistral、Gemma 等开源模型。",
-      "version": "0.34.2",
-      "fpk_version": "0.34.2",
-      "release_tag": "ollama/v0.34.2",
+      "version": "0.34.3",
+      "fpk_version": "0.34.3",
+      "release_tag": "ollama/v0.34.3",
       "service_port": 11434,
       "homepage_url": "https://github.com/ollama/ollama",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/ollama/fnos/ICON_256.PNG",
@@ -1750,7 +1750,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-09-18T08:02:46Z",
+      "updated_at": "2026-09-23T08:02:43Z",
       "download_count": 159,
       "app_type": "docker",
       "category": "ai"
@@ -2003,7 +2003,7 @@
         "arm"
       ],
       "updated_at": "2026-09-20T08:03:09Z",
-      "download_count": 69,
+      "download_count": 70,
       "app_type": "docker",
       "category": "content"
     },
@@ -2024,7 +2024,7 @@
         "arm"
       ],
       "updated_at": "2026-08-17T08:46:58Z",
-      "download_count": 1259,
+      "download_count": 1265,
       "app_type": "native",
       "category": "download"
     },
@@ -2045,7 +2045,7 @@
         "arm"
       ],
       "updated_at": "2026-08-17T06:22:55Z",
-      "download_count": 206,
+      "download_count": 207,
       "app_type": "docker",
       "category": "system"
     },
@@ -2433,9 +2433,9 @@
       "file_prefix": "transmission",
       "display_name": "Transmission",
       "description": "Transmission 是一个轻量级的 BitTorrent 客户端，以简洁高效著称，支持 Web 远程管理。",
-      "version": "latest-2026.09.22",
-      "fpk_version": "latest-2026.09.22",
-      "release_tag": "transmission/vlatest-2026.09.22",
+      "version": "latest-2026.09.23",
+      "fpk_version": "latest-2026.09.23",
+      "release_tag": "transmission/vlatest-2026.09.23",
       "service_port": 9091,
       "homepage_url": "https://transmissionbt.com",
       "icon_url": "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps/transmission/fnos/ICON_256.PNG",
@@ -2443,7 +2443,7 @@
         "x86",
         "arm"
       ],
-      "updated_at": "2026-09-22T08:02:57Z",
+      "updated_at": "2026-09-23T08:02:51Z",
       "download_count": 64,
       "app_type": "docker",
       "category": "download"
@@ -2528,7 +2528,7 @@
         "arm"
       ],
       "updated_at": "2026-08-17T10:46:49Z",
-      "download_count": 324,
+      "download_count": 325,
       "app_type": "docker",
       "category": "network"
     },
